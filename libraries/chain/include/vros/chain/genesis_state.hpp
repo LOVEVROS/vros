@@ -1,18 +1,18 @@
 /**
  *  @file
- *  @copyright defined in evt/LICENSE.txt
+ *  @copyright defined in vros/LICENSE.txt
  */
 #pragma once
-#include <evt/chain/chain_config.hpp>
-#include <evt/chain/types.hpp>
-#include <evt/chain/contracts/types.hpp>
+#include <vros/chain/chain_config.hpp>
+#include <vros/chain/types.hpp>
+#include <vros/chain/contracts/types.hpp>
 
 #include <fc/crypto/sha256.hpp>
 
 #include <string>
 #include <vector>
 
-namespace evt { namespace chain {
+namespace vros { namespace chain {
 
 using contracts::group_def;
 using contracts::fungible_def;
@@ -20,7 +20,7 @@ using contracts::fungible_def;
 struct genesis_state {
     genesis_state();
 
-    static const string evt_root_key;
+    static const string vros_root_key;
 
     chain_config initial_configuration = {
         .max_block_net_usage            = config::default_max_block_net_usage,
@@ -36,15 +36,15 @@ struct genesis_state {
         .max_transaction_lifetime       = config::default_max_trx_lifetime,
         .max_authority_depth            = config::default_max_auth_depth,
 
-        .evt_link_expired_secs          = config::default_evt_link_expired_secs
+        .vros_link_expired_secs          = config::default_vros_link_expired_secs
     };
 
     time_point      initial_timestamp;
     public_key_type initial_key;
 
-    group_def       evt_org;
-    fungible_def    evt;
-    fungible_def    pevt;
+    group_def       vros_org;
+    fungible_def    vros;
+    fungible_def    pvros;
 
     /**
     * Get the chain_id corresponding to this genesis state.
@@ -54,7 +54,7 @@ struct genesis_state {
     chain_id_type compute_chain_id() const;
 };
 
-}}  // namespace evt::chain
+}}  // namespace vros::chain
 
-FC_REFLECT(evt::chain::genesis_state,
-           (initial_timestamp)(initial_key)(evt_org)(evt)(pevt)(initial_configuration))
+FC_REFLECT(vros::chain::genesis_state,
+           (initial_timestamp)(initial_key)(vros_org)(vros)(pvros)(initial_configuration))

@@ -1,6 +1,6 @@
 /**
  *  @file
- *  @copyright defined in evt/LICENSE.txt
+ *  @copyright defined in vros/LICENSE.txt
  */
 #pragma once
-#include <evt/chain/block.hpp>
+#include <vros/chain/block.hpp>

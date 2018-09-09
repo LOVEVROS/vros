@@ -1,25 +1,25 @@
 /**
  *  @file
- *  @copyright defined in evt/LICENSE.txt
+ *  @copyright defined in vros/LICENSE.txt
  */
 #pragma once
 #include <boost/core/typeinfo.hpp>
 #include <fc/exception/exception.hpp>
 
-#define EVT_ASSERT(expr, exc_type, FORMAT, ...)            \
+#define vros_ASSERT(expr, exc_type, FORMAT, ...)            \
     FC_MULTILINE_MACRO_BEGIN                               \
     if(!(expr))                                            \
         FC_THROW_EXCEPTION(exc_type, FORMAT, __VA_ARGS__); \
     FC_MULTILINE_MACRO_END
 
-#define EVT_THROW(exc_type, FORMAT, ...) throw exc_type(FC_LOG_MESSAGE(error, FORMAT, __VA_ARGS__));
+#define vros_THROW(exc_type, FORMAT, ...) throw exc_type(FC_LOG_MESSAGE(error, FORMAT, __VA_ARGS__));
 
 /**
  * Macro inspired from FC_RETHROW_EXCEPTIONS
  * The main difference here is that if the exception caught isn't of type "chain_exception"
  * This macro will rethrow the exception as the specified "exception_type"
  */
-#define EVT_RETHROW_EXCEPTIONS(exception_type, FORMAT, ...)                                                 \
+#define vros_RETHROW_EXCEPTIONS(exception_type, FORMAT, ...)                                                 \
     catch(const boost::interprocess::bad_alloc&) {                                                          \
         throw;                                                                                              \
     }                                                                                                       \
@@ -49,7 +49,7 @@
  * The main difference here is that if the exception caught isn't of type "chain_exception"
  * This macro will rethrow the exception as the specified "exception_type"
  */
-#define EVT_CAPTURE_AND_RETHROW(exception_type, ...)                                                               \
+#define vros_CAPTURE_AND_RETHROW(exception_type, ...)                                                               \
     catch(const boost::interprocess::bad_alloc&) {                                                                 \
         throw;                                                                                                     \
     }                                                                                                              \
@@ -73,12 +73,12 @@
                                       std::current_exception());                                                   \
     }
 
-#define EVT_RECODE_EXC(cause_type, effect_type)    \
+#define vros_RECODE_EXC(cause_type, effect_type)    \
     catch(const cause_type& e) {                   \
         throw(effect_type(e.what(), e.get_log())); \
     }
 
-namespace evt { namespace chain {
+namespace vros { namespace chain {
 
 FC_DECLARE_EXCEPTION( chain_exception, 3000000, "blockchain exception" );
 FC_DECLARE_DERIVED_EXCEPTION( database_exception,                chain_exception, 3010000, "Database exception" );
@@ -120,7 +120,7 @@ FC_DECLARE_DERIVED_EXCEPTION( tx_receipt_inconsistent_status,    transaction_exc
 FC_DECLARE_DERIVED_EXCEPTION( tx_no_action,                      transaction_exception, 3030008, "transaction should have at least one normal action." );
 FC_DECLARE_DERIVED_EXCEPTION( deadline_exception,                transaction_exception, 3030009, "transaction is timeout." );
 FC_DECLARE_DERIVED_EXCEPTION( max_charge_exceeded_exception,     transaction_exception, 3030010, "exceeded max charge paid");
-FC_DECLARE_DERIVED_EXCEPTION( charge_exceeded_exception,         transaction_exception, 3030011, "exceeded remaining EVT & Pinned EVT tokens" );
+FC_DECLARE_DERIVED_EXCEPTION( charge_exceeded_exception,         transaction_exception, 3030011, "exceeded remaining vros & Pinned vros tokens" );
 FC_DECLARE_DERIVED_EXCEPTION( payer_exception,                   transaction_exception, 3030012, "Invalid payer" );
 FC_DECLARE_DERIVED_EXCEPTION( too_many_tx_at_once,               transaction_exception, 3040013, "Pushing too many transactions at once" );
 FC_DECLARE_DERIVED_EXCEPTION( tx_too_big,                        transaction_exception, 3040014, "Transaction is too big" );
@@ -184,14 +184,14 @@ FC_DECLARE_DERIVED_EXCEPTION( suspend_not_required_keys_exception, action_except
 FC_DECLARE_DERIVED_EXCEPTION( suspend_executor_exception,          action_exception, 3040033, "Invalid executor." );
 FC_DECLARE_DERIVED_EXCEPTION( suspend_invalid_action_exception,    action_exception, 3040034, "Action is not valid for suspend transaction." );
 FC_DECLARE_DERIVED_EXCEPTION( name_reserved_exception,             action_exception, 3040035, "Name is reserved." );
-FC_DECLARE_DERIVED_EXCEPTION( evt_link_exception,                  action_exception, 3040036, "EVT-Link is not valid." );
-FC_DECLARE_DERIVED_EXCEPTION( evt_link_no_key_exception,           action_exception, 3040037, "Specific segment key is not in this evt-link." );
-FC_DECLARE_DERIVED_EXCEPTION( evt_link_version_exception,          action_exception, 3040038, "EVT-Link version is not valid.");
-FC_DECLARE_DERIVED_EXCEPTION( evt_link_id_exception,               action_exception, 3040039, "EVT-Link id is not valid.");
-FC_DECLARE_DERIVED_EXCEPTION( evt_link_dupe_exception,             action_exception, 3040040, "Duplicate EVT-Link.");
-FC_DECLARE_DERIVED_EXCEPTION( evt_link_type_exception,             action_exception, 3040041, "Invalid EVT-Link type.");
-FC_DECLARE_DERIVED_EXCEPTION( evt_link_expiration_exception,       action_exception, 3040042, "EVT-Link is expired.");
-FC_DECLARE_DERIVED_EXCEPTION( evt_link_existed_exception,          action_exception, 3040043, "EVT-Link is not existed.");
+FC_DECLARE_DERIVED_EXCEPTION( vros_link_exception,                  action_exception, 3040036, "vros-Link is not valid." );
+FC_DECLARE_DERIVED_EXCEPTION( vros_link_no_key_exception,           action_exception, 3040037, "Specific segment key is not in this vros-link." );
+FC_DECLARE_DERIVED_EXCEPTION( vros_link_version_exception,          action_exception, 3040038, "vros-Link version is not valid.");
+FC_DECLARE_DERIVED_EXCEPTION( vros_link_id_exception,               action_exception, 3040039, "vros-Link id is not valid.");
+FC_DECLARE_DERIVED_EXCEPTION( vros_link_dupe_exception,             action_exception, 3040040, "Duplicate vros-Link.");
+FC_DECLARE_DERIVED_EXCEPTION( vros_link_type_exception,             action_exception, 3040041, "Invalid vros-Link type.");
+FC_DECLARE_DERIVED_EXCEPTION( vros_link_expiration_exception,       action_exception, 3040042, "vros-Link is expired.");
+FC_DECLARE_DERIVED_EXCEPTION( vros_link_existed_exception,          action_exception, 3040043, "vros-Link is not existed.");
 FC_DECLARE_DERIVED_EXCEPTION( everipass_exception,                 action_exception, 3040044, "everiPass failed.");
 FC_DECLARE_DERIVED_EXCEPTION( everipay_exception,                  action_exception, 3040045, "everiPay failed.");
 FC_DECLARE_DERIVED_EXCEPTION( prodvote_key_exception,              action_exception, 3040046, "Unknown prodvote conf key.");
@@ -221,7 +221,7 @@ FC_DECLARE_DERIVED_EXCEPTION( chain_id_type_exception,           chain_type_exce
 FC_DECLARE_DERIVED_EXCEPTION( missing_chain_api_plugin_exception,   plugin_exception, 3130001, "Missing Chain API Plugin" );
 FC_DECLARE_DERIVED_EXCEPTION( missing_wallet_api_plugin_exception,  plugin_exception, 3130002, "Missing Wallet API Plugin" );
 FC_DECLARE_DERIVED_EXCEPTION( missing_net_api_plugin_exception,     plugin_exception, 3130003, "Missing Net API Plugin" );
-FC_DECLARE_DERIVED_EXCEPTION( missing_evt_api_plugin_exception,     plugin_exception, 3130004, "Missing EVT API Plugin" );
+FC_DECLARE_DERIVED_EXCEPTION( missing_vros_api_plugin_exception,     plugin_exception, 3130004, "Missing vros API Plugin" );
 FC_DECLARE_DERIVED_EXCEPTION( missing_history_api_plugin_exception, plugin_exception, 3130005, "Missing History API Plugin" );
 FC_DECLARE_DERIVED_EXCEPTION( plugin_config_exception,              plugin_exception, 3130006, "Incorrect plugin configuration" );
 FC_DECLARE_DERIVED_EXCEPTION( mongodb_plugin_not_enabled_exception, plugin_exception, 3130007, "Mongodb plugin is not enabled" );
@@ -279,4 +279,4 @@ FC_DECLARE_DERIVED_EXCEPTION( tx_duplicate_sig,                 authorization_ex
 FC_DECLARE_DERIVED_EXCEPTION( tx_irrelevant_sig,                authorization_exception, 3090002, "Irrelevant signature is included." );
 FC_DECLARE_DERIVED_EXCEPTION( unsatisfied_authorization,        authorization_exception, 3090003, "Provided keys do not satisfy declared authorizations." );
 
-}} // evt::chain
+}} // vros::chain

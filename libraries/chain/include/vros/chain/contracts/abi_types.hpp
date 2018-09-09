@@ -1,15 +1,15 @@
 /**
  *  @file
- *  @copyright defined in evt/LICENSE.txt
+ *  @copyright defined in vros/LICENSE.txt
  */
 #pragma once
-#include <evt/chain/types.hpp>
+#include <vros/chain/types.hpp>
 
-namespace evt { namespace chain { namespace contracts {
+namespace vros { namespace chain { namespace contracts {
 
 using type_name       = string;
 using field_name      = string;
-using action_name     = evt::chain::action_name;
+using action_name     = vros::chain::action_name;
 
 struct type_def {
     type_def() = default;
@@ -75,10 +75,10 @@ struct abi_def {
     vector<action_def> actions;
 };
 
-}}}  // namespace evt::chain::contracts
+}}}  // namespace vros::chain::contracts
 
-FC_REFLECT(evt::chain::contracts::type_def, (new_type_name)(type));
-FC_REFLECT(evt::chain::contracts::field_def, (name)(type));
-FC_REFLECT(evt::chain::contracts::struct_def, (name)(base)(fields));
-FC_REFLECT(evt::chain::contracts::action_def, (name)(type));
-FC_REFLECT(evt::chain::contracts::abi_def, (types)(structs)(actions));
+FC_REFLECT(vros::chain::contracts::type_def, (new_type_name)(type));
+FC_REFLECT(vros::chain::contracts::field_def, (name)(type));
+FC_REFLECT(vros::chain::contracts::struct_def, (name)(base)(fields));
+FC_REFLECT(vros::chain::contracts::action_def, (name)(type));
+FC_REFLECT(vros::chain::contracts::abi_def, (types)(structs)(actions));

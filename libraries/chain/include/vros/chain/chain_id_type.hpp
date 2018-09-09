@@ -1,6 +1,6 @@
 /**
  *  @file
- *  @copyright defined in evt/LICENSE.txt
+ *  @copyright defined in vros/LICENSE.txt
  */
 #pragma once
 
@@ -8,7 +8,7 @@
 
 struct hello;
 
-namespace evt {
+namespace vros {
 
 class net_plugin_impl;
 struct handshake_message;
@@ -45,19 +45,19 @@ private:
     template <typename T>
     friend T fc::variant::as() const;
 
-    friend class evt::chain_apis::read_only;
+    friend class vros::chain_apis::read_only;
 
-    friend class evt::net_plugin_impl;
-    friend struct evt::handshake_message;
+    friend class vros::net_plugin_impl;
+    friend struct vros::handshake_message;
 
     friend struct ::hello; // TODO: Rushed hack to support bnet_plugin. Need a better solution.
 };
 
 }  // namespace chain
-}  // namespace evt
+}  // namespace vros
 
 namespace fc {
 class variant;
-void to_variant(const evt::chain::chain_id_type& cid, fc::variant& v);
-void from_variant(const fc::variant& v, evt::chain::chain_id_type& cid);
+void to_variant(const vros::chain::chain_id_type& cid, fc::variant& v);
+void from_variant(const fc::variant& v, vros::chain::chain_id_type& cid);
 }  // namespace fc

@@ -1,6 +1,6 @@
 /**
  *  @file
- *  @copyright defined in evt/LICENSE.txt
+ *  @copyright defined in vros/LICENSE.txt
  */
 #pragma once
 
@@ -10,7 +10,7 @@
 #include <vector>
 #include <fc/reflect/reflect.hpp>
 
-namespace evt { namespace chain {
+namespace vros { namespace chain {
 using std::string;
 
 static constexpr uint64_t
@@ -41,7 +41,7 @@ string_to_name(const char* str) {
     return name;
 }
 
-#define N(X) evt::chain::string_to_name(#X)
+#define N(X) vros::chain::string_to_name(#X)
 
 struct name {
     uint64_t value = 0;
@@ -145,12 +145,12 @@ sort_names(std::vector<name>&& names) {
     return names;
 }
 
-}}  // namespace evt::chain
+}}  // namespace vros::chain
 
 namespace std {
 template <>
-struct hash<evt::chain::name> : private hash<uint64_t> {
-    using argument_type = evt::chain::name;
+struct hash<vros::chain::name> : private hash<uint64_t> {
+    using argument_type = vros::chain::name;
     using result_type   = typename hash<uint64_t>::result_type;
 
     result_type
@@ -164,9 +164,9 @@ struct hash<evt::chain::name> : private hash<uint64_t> {
 namespace fc {
 
 class variant;
-void to_variant(const evt::chain::name& name, fc::variant& v);
-void from_variant(const fc::variant& v, evt::chain::name& name);
+void to_variant(const vros::chain::name& name, fc::variant& v);
+void from_variant(const fc::variant& v, vros::chain::name& name);
 
 }  // namespace fc
 
-FC_REFLECT(evt::chain::name, (value));
+FC_REFLECT(vros::chain::name, (value));

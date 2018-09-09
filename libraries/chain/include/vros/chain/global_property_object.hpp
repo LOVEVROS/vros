@@ -1,6 +1,6 @@
 /**
  *  @file
- *  @copyright defined in evt/LICENSE.txt
+ *  @copyright defined in vros/LICENSE.txt
  */
 #pragma once
 #include <fc/array.hpp>
@@ -8,13 +8,13 @@
 
 #include "multi_index_includes.hpp"
 #include <chainbase/chainbase.hpp>
-#include <evt/chain/block_timestamp.hpp>
-#include <evt/chain/chain_config.hpp>
-#include <evt/chain/incremental_merkle.hpp>
-#include <evt/chain/producer_schedule.hpp>
-#include <evt/chain/types.hpp>
+#include <vros/chain/block_timestamp.hpp>
+#include <vros/chain/chain_config.hpp>
+#include <vros/chain/incremental_merkle.hpp>
+#include <vros/chain/producer_schedule.hpp>
+#include <vros/chain/types.hpp>
 
-namespace evt { namespace chain {
+namespace vros { namespace chain {
 
 /**
  * @class global_property_object
@@ -60,10 +60,10 @@ using dynamic_global_property_multi_index = chainbase::shared_multi_index_contai
     indexed_by<ordered_unique<tag<by_id>, BOOST_MULTI_INDEX_MEMBER(dynamic_global_property_object,
                                                                    dynamic_global_property_object::id_type, id)>>>;
 
-}}  // namespace evt::chain
+}}  // namespace vros::chain
 
-CHAINBASE_SET_INDEX_TYPE(evt::chain::global_property_object, evt::chain::global_property_multi_index)
-CHAINBASE_SET_INDEX_TYPE(evt::chain::dynamic_global_property_object, evt::chain::dynamic_global_property_multi_index)
+CHAINBASE_SET_INDEX_TYPE(vros::chain::global_property_object, vros::chain::global_property_multi_index)
+CHAINBASE_SET_INDEX_TYPE(vros::chain::dynamic_global_property_object, vros::chain::dynamic_global_property_multi_index)
 
-FC_REFLECT(evt::chain::dynamic_global_property_object, (global_action_sequence))
-FC_REFLECT(evt::chain::global_property_object, (proposed_schedule_block_num)(proposed_schedule)(configuration))
+FC_REFLECT(vros::chain::dynamic_global_property_object, (global_action_sequence))
+FC_REFLECT(vros::chain::global_property_object, (proposed_schedule_block_num)(proposed_schedule)(configuration))

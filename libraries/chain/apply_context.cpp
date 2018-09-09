@@ -1,16 +1,16 @@
 /**
  *  @file
- *  @copyright defined in evt/LICENSE.txt
+ *  @copyright defined in vros/LICENSE.txt
  */
 #include <algorithm>
-#include <evt/chain/apply_context.hpp>
-#include <evt/chain/controller.hpp>
-#include <evt/chain/transaction_context.hpp>
-#include <evt/chain/global_property_object.hpp>
-#include <evt/chain/contracts/types_invoker.hpp>
-#include <evt/chain/contracts/evt_contract.hpp>
+#include <vros/chain/apply_context.hpp>
+#include <vros/chain/controller.hpp>
+#include <vros/chain/transaction_context.hpp>
+#include <vros/chain/global_property_object.hpp>
+#include <vros/chain/contracts/types_invoker.hpp>
+#include <vros/chain/contracts/vros_contract.hpp>
 
-namespace evt { namespace chain {
+namespace vros { namespace chain {
 
 static inline void
 print_debug(const action_trace& ar) {
@@ -80,4 +80,4 @@ apply_context::next_global_sequence() {
     return p.global_action_sequence;
 }
 
-}}  // namespace evt::chain
+}}  // namespace vros::chain

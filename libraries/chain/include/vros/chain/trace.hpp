@@ -1,14 +1,14 @@
 /**
  *  @file
- *  @copyright defined in evt/LICENSE.txt
+ *  @copyright defined in vros/LICENSE.txt
  */
 #pragma once
 
-#include <evt/chain/action.hpp>
-#include <evt/chain/action_receipt.hpp>
-#include <evt/chain/block.hpp>
+#include <vros/chain/action.hpp>
+#include <vros/chain/action_receipt.hpp>
+#include <vros/chain/block.hpp>
 
-namespace evt { namespace chain {
+namespace vros { namespace chain {
 
 struct action_trace {
     action_trace(const action_receipt& r)
@@ -45,8 +45,8 @@ struct block_trace {
 };
 using block_trace_ptr = std::shared_ptr<block_trace>;
 
-}}  // namespace evt::chain
+}}  // namespace vros::chain
 
-FC_REFLECT(evt::chain::action_trace, (receipt)(act)(elapsed)(console)(trx_id))
-FC_REFLECT(evt::chain::transaction_trace, (id)(receipt)(elapsed)(is_suspend)(action_traces)(charge)(except))
-FC_REFLECT(evt::chain::block_trace, (elapsed)(trx_traces))
+FC_REFLECT(vros::chain::action_trace, (receipt)(act)(elapsed)(console)(trx_id))
+FC_REFLECT(vros::chain::transaction_trace, (id)(receipt)(elapsed)(is_suspend)(action_traces)(charge)(except))
+FC_REFLECT(vros::chain::block_trace, (elapsed)(trx_traces))

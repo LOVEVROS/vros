@@ -1,24 +1,24 @@
 /**
  *  @file
- *  @copyright defined in evt/LICENSE.txt
+ *  @copyright defined in vros/LICENSE.txt
  */
 #pragma once
 
-#include <evt/chain/address.hpp>
-#include <evt/chain/asset.hpp>
-#include <evt/chain/chain_config.hpp>
-#include <evt/chain/config.hpp>
-#include <evt/chain/types.hpp>
-#include <evt/chain/transaction.hpp>
+#include <vros/chain/address.hpp>
+#include <vros/chain/asset.hpp>
+#include <vros/chain/chain_config.hpp>
+#include <vros/chain/config.hpp>
+#include <vros/chain/types.hpp>
+#include <vros/chain/transaction.hpp>
 
-#include <evt/chain/contracts/authorizer_ref.hpp>
-#include <evt/chain/contracts/group.hpp>
-#include <evt/chain/contracts/metadata.hpp>
-#include <evt/chain/contracts/evt_link.hpp>
+#include <vros/chain/contracts/authorizer_ref.hpp>
+#include <vros/chain/contracts/group.hpp>
+#include <vros/chain/contracts/metadata.hpp>
+#include <vros/chain/contracts/vros_link.hpp>
 
-namespace evt { namespace chain { namespace contracts {
+namespace vros { namespace chain { namespace contracts {
 
-#define EVT_ACTION(typename)       \
+#define vros_ACTION(typename)       \
     typename() = default;          \
                                    \
     static constexpr action_name   \
@@ -26,23 +26,23 @@ namespace evt { namespace chain { namespace contracts {
         return N(typename);        \
     }
 
-using domain_name     = evt::chain::domain_name;
-using domian_key      = evt::chain::domain_key;
-using token_name      = evt::chain::token_name;
-using permission_name = evt::chain::permission_name;
-using account_name    = evt::chain::account_name;
-using fungible_name   = evt::chain::fungible_name;
-using symbol_name     = evt::chain::symbol_name;
-using symbol_id_type  = evt::chain::symbol_id_type;
-using user_id         = evt::chain::public_key_type;
+using domain_name     = vros::chain::domain_name;
+using domian_key      = vros::chain::domain_key;
+using token_name      = vros::chain::token_name;
+using permission_name = vros::chain::permission_name;
+using account_name    = vros::chain::account_name;
+using fungible_name   = vros::chain::fungible_name;
+using symbol_name     = vros::chain::symbol_name;
+using symbol_id_type  = vros::chain::symbol_id_type;
+using user_id         = vros::chain::public_key_type;
 using user_list       = std::vector<user_id>;
-using group_name      = evt::chain::group_name;
-using group_key       = evt::chain::address;
+using group_name      = vros::chain::group_name;
+using group_key       = vros::chain::address;
 using group_def       = group;
-using balance_type    = evt::chain::asset;
-using address_type    = evt::chain::address;
+using balance_type    = vros::chain::asset;
+using address_type    = vros::chain::address;
 using address_list    = std::vector<address_type>;
-using conf_key        = evt::chain::conf_key;
+using conf_key        = vros::chain::conf_key;
 
 struct token_def {
     token_def() = default;
@@ -134,7 +134,7 @@ struct newdomain {
     permission_def transfer;
     permission_def manage;
 
-    EVT_ACTION(newdomain);
+    vros_ACTION(newdomain);
 };
 
 struct issuetoken {
@@ -142,7 +142,7 @@ struct issuetoken {
     std::vector<token_name> names;
     address_list            owner;
 
-    EVT_ACTION(issuetoken);
+    vros_ACTION(issuetoken);
 };
 
 struct transfer {
@@ -151,28 +151,28 @@ struct transfer {
     address_list to;
     string       memo;
 
-    EVT_ACTION(transfer);
+    vros_ACTION(transfer);
 };
 
 struct destroytoken {
     domain_name domain;
     token_name  name;
 
-    EVT_ACTION(destroytoken);
+    vros_ACTION(destroytoken);
 };
 
 struct newgroup {
     group_name name;
     group_def  group;
 
-    EVT_ACTION(newgroup);
+    vros_ACTION(newgroup);
 };
 
 struct updategroup {
     group_name name;
     group_def  group;
 
-    EVT_ACTION(updategroup);
+    vros_ACTION(updategroup);
 };
 
 struct updatedomain {
@@ -182,7 +182,7 @@ struct updatedomain {
     fc::optional<permission_def> transfer;
     fc::optional<permission_def> manage;
 
-    EVT_ACTION(updatedomain);
+    vros_ACTION(updatedomain);
 };
 
 struct newfungible {
@@ -196,7 +196,7 @@ struct newfungible {
 
     asset total_supply;
 
-    EVT_ACTION(newfungible);
+    vros_ACTION(newfungible);
 };
 
 struct updfungible {
@@ -205,7 +205,7 @@ struct updfungible {
     fc::optional<permission_def> issue;
     fc::optional<permission_def> manage;
 
-    EVT_ACTION(updfungible);
+    vros_ACTION(updfungible);
 };
 
 struct issuefungible {
@@ -213,7 +213,7 @@ struct issuefungible {
     asset        number;
     string       memo;
 
-    EVT_ACTION(issuefungible);
+    vros_ACTION(issuefungible);
 };
 
 struct transferft {
@@ -222,16 +222,16 @@ struct transferft {
     asset        number;
     string       memo;
 
-    EVT_ACTION(transferft);
+    vros_ACTION(transferft);
 };
 
-struct evt2pevt {
+struct vros2pvros {
     address_type from;
     address_type to;
     asset        number;
     string       memo;
 
-    EVT_ACTION(evt2pevt);
+    vros_ACTION(vros2pvros);
 };
 
 struct addmeta {
@@ -239,7 +239,7 @@ struct addmeta {
     meta_value     value;
     authorizer_ref creator;
 
-    EVT_ACTION(addmeta);
+    vros_ACTION(addmeta);
 };
 
 struct newsuspend {
@@ -247,48 +247,48 @@ struct newsuspend {
     user_id       proposer;
     transaction   trx;
 
-    EVT_ACTION(newsuspend);
+    vros_ACTION(newsuspend);
 };
 
 struct cancelsuspend {
     proposal_name name;
 
-    EVT_ACTION(cancelsuspend);
+    vros_ACTION(cancelsuspend);
 };
 
 struct aprvsuspend {
     proposal_name               name;
     std::vector<signature_type> signatures;
 
-    EVT_ACTION(aprvsuspend);
+    vros_ACTION(aprvsuspend);
 };
 
 struct execsuspend {
     proposal_name name;
     user_id       executor;
 
-    EVT_ACTION(execsuspend);
+    vros_ACTION(execsuspend);
 };
 
 struct paycharge {
     address  payer;
     uint32_t charge;
 
-    EVT_ACTION(paycharge);
+    vros_ACTION(paycharge);
 };
 
 struct everipass {
-    evt_link link;
+    vros_link link;
 
-    EVT_ACTION(everipass);
+    vros_ACTION(everipass);
 };
 
 struct everipay {
-    evt_link link;
+    vros_link link;
     address  payee;
     asset    number;
 
-    EVT_ACTION(everipay);
+    vros_ACTION(everipay);
 };
 
 struct prodvote {
@@ -296,38 +296,38 @@ struct prodvote {
     conf_key     key;
     int64_t      value;
 
-    EVT_ACTION(prodvote);
+    vros_ACTION(prodvote);
 };
 
-}}}  // namespace evt::chain::contracts
+}}}  // namespace vros::chain::contracts
 
-FC_REFLECT(evt::chain::contracts::token_def, (domain)(name)(owner)(metas));
-FC_REFLECT(evt::chain::contracts::key_weight, (key)(weight));
-FC_REFLECT(evt::chain::contracts::authorizer_weight, (ref)(weight));
-FC_REFLECT(evt::chain::contracts::permission_def, (name)(threshold)(authorizers));
-FC_REFLECT(evt::chain::contracts::domain_def, (name)(creator)(create_time)(issue)(transfer)(manage)(metas));
-FC_REFLECT(evt::chain::contracts::fungible_def, (name)(sym_name)(sym)(creator)(create_time)(issue)(manage)(total_supply)(metas));
-FC_REFLECT_ENUM(evt::chain::contracts::suspend_status, (proposed)(executed)(failed)(cancelled));
-FC_REFLECT(evt::chain::contracts::suspend_def, (name)(proposer)(status)(trx)(signed_keys));
+FC_REFLECT(vros::chain::contracts::token_def, (domain)(name)(owner)(metas));
+FC_REFLECT(vros::chain::contracts::key_weight, (key)(weight));
+FC_REFLECT(vros::chain::contracts::authorizer_weight, (ref)(weight));
+FC_REFLECT(vros::chain::contracts::permission_def, (name)(threshold)(authorizers));
+FC_REFLECT(vros::chain::contracts::domain_def, (name)(creator)(create_time)(issue)(transfer)(manage)(metas));
+FC_REFLECT(vros::chain::contracts::fungible_def, (name)(sym_name)(sym)(creator)(create_time)(issue)(manage)(total_supply)(metas));
+FC_REFLECT_ENUM(vros::chain::contracts::suspend_status, (proposed)(executed)(failed)(cancelled));
+FC_REFLECT(vros::chain::contracts::suspend_def, (name)(proposer)(status)(trx)(signed_keys));
 
-FC_REFLECT(evt::chain::contracts::newdomain, (name)(creator)(issue)(transfer)(manage));
-FC_REFLECT(evt::chain::contracts::issuetoken, (domain)(names)(owner));
-FC_REFLECT(evt::chain::contracts::transfer, (domain)(name)(to)(memo));
-FC_REFLECT(evt::chain::contracts::destroytoken, (domain)(name));
-FC_REFLECT(evt::chain::contracts::newgroup, (name)(group));
-FC_REFLECT(evt::chain::contracts::updategroup, (name)(group));
-FC_REFLECT(evt::chain::contracts::updatedomain, (name)(issue)(transfer)(manage));
-FC_REFLECT(evt::chain::contracts::newfungible, (name)(sym_name)(sym)(creator)(issue)(manage)(total_supply));
-FC_REFLECT(evt::chain::contracts::updfungible, (sym_id)(issue)(manage));
-FC_REFLECT(evt::chain::contracts::issuefungible, (address)(number)(memo));
-FC_REFLECT(evt::chain::contracts::transferft, (from)(to)(number)(memo));
-FC_REFLECT(evt::chain::contracts::evt2pevt, (from)(to)(number)(memo));
-FC_REFLECT(evt::chain::contracts::addmeta, (key)(value)(creator));
-FC_REFLECT(evt::chain::contracts::newsuspend, (name)(proposer)(trx));
-FC_REFLECT(evt::chain::contracts::cancelsuspend, (name));
-FC_REFLECT(evt::chain::contracts::aprvsuspend, (name)(signatures));
-FC_REFLECT(evt::chain::contracts::execsuspend, (name)(executor));
-FC_REFLECT(evt::chain::contracts::paycharge, (payer)(charge));
-FC_REFLECT(evt::chain::contracts::everipass, (link));
-FC_REFLECT(evt::chain::contracts::everipay, (link)(payee)(number));
-FC_REFLECT(evt::chain::contracts::prodvote, (producer)(key)(value));
+FC_REFLECT(vros::chain::contracts::newdomain, (name)(creator)(issue)(transfer)(manage));
+FC_REFLECT(vros::chain::contracts::issuetoken, (domain)(names)(owner));
+FC_REFLECT(vros::chain::contracts::transfer, (domain)(name)(to)(memo));
+FC_REFLECT(vros::chain::contracts::destroytoken, (domain)(name));
+FC_REFLECT(vros::chain::contracts::newgroup, (name)(group));
+FC_REFLECT(vros::chain::contracts::updategroup, (name)(group));
+FC_REFLECT(vros::chain::contracts::updatedomain, (name)(issue)(transfer)(manage));
+FC_REFLECT(vros::chain::contracts::newfungible, (name)(sym_name)(sym)(creator)(issue)(manage)(total_supply));
+FC_REFLECT(vros::chain::contracts::updfungible, (sym_id)(issue)(manage));
+FC_REFLECT(vros::chain::contracts::issuefungible, (address)(number)(memo));
+FC_REFLECT(vros::chain::contracts::transferft, (from)(to)(number)(memo));
+FC_REFLECT(vros::chain::contracts::vros2pvros, (from)(to)(number)(memo));
+FC_REFLECT(vros::chain::contracts::addmeta, (key)(value)(creator));
+FC_REFLECT(vros::chain::contracts::newsuspend, (name)(proposer)(trx));
+FC_REFLECT(vros::chain::contracts::cancelsuspend, (name));
+FC_REFLECT(vros::chain::contracts::aprvsuspend, (name)(signatures));
+FC_REFLECT(vros::chain::contracts::execsuspend, (name)(executor));
+FC_REFLECT(vros::chain::contracts::paycharge, (payer)(charge));
+FC_REFLECT(vros::chain::contracts::everipass, (link));
+FC_REFLECT(vros::chain::contracts::everipay, (link)(payee)(number));
+FC_REFLECT(vros::chain::contracts::prodvote, (producer)(key)(value));

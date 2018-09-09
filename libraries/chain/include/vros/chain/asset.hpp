@@ -1,18 +1,18 @@
 /**
  *  @file
- *  @copyright defined in evt/LICENSE.txt
+ *  @copyright defined in vros/LICENSE.txt
  */
 #pragma once
-#include <evt/chain/exceptions.hpp>
-#include <evt/chain/types.hpp>
+#include <vros/chain/exceptions.hpp>
+#include <vros/chain/types.hpp>
 
-namespace evt { namespace chain {
+namespace vros { namespace chain {
 
 /// Defined to be largest power of 10 that fits in 53 bits of precision 
 #define ASSET_MAX_SHARE_SUPPLY   int64_t(1'000'000'000'000'000ll)
 
-#define EVT_SYM_ID  1
-#define PEVT_SYM_ID 2
+#define vros_SYM_ID  1
+#define Pvros_SYM_ID 2
 
 class symbol {
 private:
@@ -23,7 +23,7 @@ public:
 
     constexpr symbol(uint8_t p, uint32_t id)
         : value_(0) {
-        EVT_ASSERT(p <= max_precision, symbol_type_exception, "Exceed max precision");
+        vros_ASSERT(p <= max_precision, symbol_type_exception, "Exceed max precision");
         value_  = ((uint64_t)p << 32);
         value_ |= id;
     }
@@ -64,18 +64,18 @@ private:
 
     void
     reflector_verify() const {
-        EVT_ASSERT(valid(), symbol_type_exception, "invalid symbol");
+        vros_ASSERT(valid(), symbol_type_exception, "invalid symbol");
     }
 };
 
 static constexpr symbol
-evt_sym() {
-    return symbol(5, EVT_SYM_ID);
+vros_sym() {
+    return symbol(5, vros_SYM_ID);
 }
 
 static constexpr symbol
-pevt_sym() {
-    return symbol(5, PEVT_SYM_ID);
+pvros_sym() {
+    return symbol(5, Pvros_SYM_ID);
 }
 
 /**
@@ -96,8 +96,8 @@ public:
     asset(share_type a, symbol sym)
         : amount_(a)
         , sym_(sym) {
-        EVT_ASSERT(is_amount_within_range(), asset_type_exception, "magnitude of asset amount must be less than 2^62");
-        EVT_ASSERT(sym_.valid(), asset_type_exception, "invalid symbol");
+        vros_ASSERT(is_amount_within_range(), asset_type_exception, "magnitude of asset amount must be less than 2^62");
+        vros_ASSERT(sym_.valid(), asset_type_exception, "invalid symbol");
     }
 
 public:
@@ -122,14 +122,14 @@ public:
 
     asset&
     operator+=(const asset& o) {
-        EVT_ASSERT(sym() == o.sym(), asset_type_exception, "addition between two different asset is not allowed");
+        vros_ASSERT(sym() == o.sym(), asset_type_exception, "addition between two different asset is not allowed");
         amount_ += o.amount();
         return *this;
     }
 
     asset&
     operator-=(const asset& o) {
-        EVT_ASSERT(sym() == o.sym(), asset_type_exception, "addition between two different asset is not allowed");
+        vros_ASSERT(sym() == o.sym(), asset_type_exception, "addition between two different asset is not allowed");
         amount_ -= o.amount();
         return *this;
     }
@@ -143,7 +143,7 @@ public:
 
     friend bool
     operator<(const asset& a, const asset& b) {
-        EVT_ASSERT(a.sym() == b.sym(), asset_type_exception, "addition between two different asset is not allowed");
+        vros_ASSERT(a.sym() == b.sym(), asset_type_exception, "addition between two different asset is not allowed");
         return a.amount() < b.amount();
     }
 
@@ -161,13 +161,13 @@ public:
 
     friend asset
     operator-(const asset& a, const asset& b) {
-        EVT_ASSERT(a.sym() == b.sym(), asset_type_exception, "addition between two different asset is not allowed");
+        vros_ASSERT(a.sym() == b.sym(), asset_type_exception, "addition between two different asset is not allowed");
         return asset(a.amount() - b.amount(), a.sym());
     }
 
     friend asset
     operator+(const asset& a, const asset& b) {
-        EVT_ASSERT(a.sym() == b.sym(), asset_type_exception, "addition between two different asset is not allowed");
+        vros_ASSERT(a.sym() == b.sym(), asset_type_exception, "addition between two different asset is not allowed");
         return asset(a.amount() + b.amount(), a.sym());
     }
 
@@ -179,8 +179,8 @@ public:
 
     void
     reflector_verify() const {
-        EVT_ASSERT(is_amount_within_range(), asset_type_exception, "magnitude of asset amount must be less than 2^62");
-        EVT_ASSERT(sym_.valid(), asset_type_exception, "invalid symbol");
+        vros_ASSERT(is_amount_within_range(), asset_type_exception, "magnitude of asset amount must be less than 2^62");
+        vros_ASSERT(sym_.valid(), asset_type_exception, "invalid symbol");
     }
 
 private:
@@ -188,31 +188,31 @@ private:
     symbol     sym_;
 };
 
-}}  // namespace evt::chain
+}}  // namespace vros::chain
 
 namespace fc {
 
 inline void
-to_variant(const evt::chain::symbol& var, fc::variant& vo) {
+to_variant(const vros::chain::symbol& var, fc::variant& vo) {
     vo = var.to_string();
 }
 
 inline void
-from_variant(const fc::variant& var, evt::chain::symbol& vo) {
-    vo = evt::chain::symbol::from_string(var.get_string());
+from_variant(const fc::variant& var, vros::chain::symbol& vo) {
+    vo = vros::chain::symbol::from_string(var.get_string());
 }
 
 inline void
-to_variant(const evt::chain::asset& var, fc::variant& vo) {
+to_variant(const vros::chain::asset& var, fc::variant& vo) {
     vo = var.to_string();
 }
 
 inline void
-from_variant(const fc::variant& var, evt::chain::asset& vo) {
-    vo = evt::chain::asset::from_string(var.get_string());
+from_variant(const fc::variant& var, vros::chain::asset& vo) {
+    vo = vros::chain::asset::from_string(var.get_string());
 }
 
 }  // namespace fc
 
-FC_REFLECT(evt::chain::symbol, (value_));
-FC_REFLECT(evt::chain::asset, (amount_)(sym_));
+FC_REFLECT(vros::chain::symbol, (value_));
+FC_REFLECT(vros::chain::asset, (amount_)(sym_));

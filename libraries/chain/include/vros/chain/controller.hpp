@@ -1,20 +1,20 @@
 /**
  *  @file
- *  @copyright defined in evt/LICENSE.txt
+ *  @copyright defined in vros/LICENSE.txt
  */
 #pragma once
 #include <functional>
 #include <boost/signals2/signal.hpp>
-#include <evt/chain/block_state.hpp>
-#include <evt/chain/trace.hpp>
-#include <evt/chain/genesis_state.hpp>
-#include <evt/chain/contracts/abi_serializer.hpp>
+#include <vros/chain/block_state.hpp>
+#include <vros/chain/trace.hpp>
+#include <vros/chain/genesis_state.hpp>
+#include <vros/chain/contracts/abi_serializer.hpp>
 
 namespace chainbase {
 class database;
 }
 
-namespace evt { namespace chain {
+namespace vros { namespace chain {
 
 class fork_database;
 class token_database;
@@ -187,7 +187,7 @@ private:
     std::unique_ptr<controller_impl> my;
 };
 
-}}  // namespace evt::chain
+}}  // namespace vros::chain
 
-FC_REFLECT(evt::chain::controller::config,
+FC_REFLECT(vros::chain::controller::config,
            (blocks_dir)(state_dir)(tokendb_dir)(state_size)(reversible_cache_size)(read_only)(force_all_checks)(loadtest_mode)(charge_free_mode)(contracts_console)(genesis))

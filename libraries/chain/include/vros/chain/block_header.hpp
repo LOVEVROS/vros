@@ -1,12 +1,12 @@
 /**
  *  @file
- *  @copyright defined in evt/LICENSE.txt
+ *  @copyright defined in vros/LICENSE.txt
  */
 #pragma once
-#include <evt/chain/block_timestamp.hpp>
-#include <evt/chain/producer_schedule.hpp>
+#include <vros/chain/block_timestamp.hpp>
+#include <vros/chain/producer_schedule.hpp>
 
-namespace evt { namespace chain {
+namespace vros { namespace chain {
 
 struct block_header {
     block_timestamp_type timestamp;
@@ -57,10 +57,10 @@ struct header_confirmation {
     signature_type producer_signature;
 };
 
-}}  // namespace evt::chain
+}}  // namespace vros::chain
 
-FC_REFLECT(evt::chain::block_header, (timestamp)(producer)(confirmed)(previous)(transaction_mroot)(action_mroot)
+FC_REFLECT(vros::chain::block_header, (timestamp)(producer)(confirmed)(previous)(transaction_mroot)(action_mroot)
                                      (schedule_version)(new_producers)(header_extensions))
 
-FC_REFLECT_DERIVED(evt::chain::signed_block_header, (evt::chain::block_header), (producer_signature))
-FC_REFLECT(evt::chain::header_confirmation, (block_id)(producer)(producer_signature))
+FC_REFLECT_DERIVED(vros::chain::signed_block_header, (vros::chain::block_header), (producer_signature))
+FC_REFLECT(vros::chain::header_confirmation, (block_id)(producer)(producer_signature))

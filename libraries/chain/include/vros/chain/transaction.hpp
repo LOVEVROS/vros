@@ -1,14 +1,14 @@
 /**
  *  @file
- *  @copyright defined in evt/LICENSE.txt
+ *  @copyright defined in vros/LICENSE.txt
  */
 #pragma once
 
-#include <evt/chain/action.hpp>
-#include <evt/chain/address.hpp>
+#include <vros/chain/action.hpp>
+#include <vros/chain/address.hpp>
 #include <numeric>
 
-namespace evt { namespace chain {
+namespace vros { namespace chain {
 
 /**
  *  The transaction header contains the fixed-sized data
@@ -134,10 +134,10 @@ using packed_transaction_ptr = std::shared_ptr<packed_transaction>;
 
 uint128_t transaction_id_to_sender_id(const transaction_id_type& tid);
 
-}}  // namespace evt::chain
+}}  // namespace vros::chain
 
-FC_REFLECT(evt::chain::transaction_header, (expiration)(ref_block_num)(ref_block_prefix)(max_charge))
-FC_REFLECT_DERIVED(evt::chain::transaction, (evt::chain::transaction_header), (actions)(payer)(transaction_extensions))
-FC_REFLECT_DERIVED(evt::chain::signed_transaction, (evt::chain::transaction), (signatures))
-FC_REFLECT_ENUM(evt::chain::packed_transaction::compression_type, (none)(zlib))
-FC_REFLECT(evt::chain::packed_transaction, (signatures)(compression)(packed_trx))
+FC_REFLECT(vros::chain::transaction_header, (expiration)(ref_block_num)(ref_block_prefix)(max_charge))
+FC_REFLECT_DERIVED(vros::chain::transaction, (vros::chain::transaction_header), (actions)(payer)(transaction_extensions))
+FC_REFLECT_DERIVED(vros::chain::signed_transaction, (vros::chain::transaction), (signatures))
+FC_REFLECT_ENUM(vros::chain::packed_transaction::compression_type, (none)(zlib))
+FC_REFLECT(vros::chain::packed_transaction, (signatures)(compression)(packed_trx))

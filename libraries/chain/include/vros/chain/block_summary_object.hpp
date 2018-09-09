@@ -1,12 +1,12 @@
 /**
  *  @file
- *  @copyright defined in evt/LICENSE.txt
+ *  @copyright defined in vros/LICENSE.txt
  */
 #pragma once
-#include <evt/chain/multi_index_includes.hpp>
-#include <evt/chain/types.hpp>
+#include <vros/chain/multi_index_includes.hpp>
+#include <vros/chain/types.hpp>
 
-namespace evt { namespace chain {
+namespace vros { namespace chain {
 /**
  *  @brief tracks minimal information about past blocks to implement TaPOS
  *  @ingroup object
@@ -32,8 +32,8 @@ using block_summary_multi_index = chainbase::shared_multi_index_container<
         //      block_id)>
         >>;
 
-}}  // namespace evt::chain
+}}  // namespace vros::chain
 
-CHAINBASE_SET_INDEX_TYPE(evt::chain::block_summary_object, evt::chain::block_summary_multi_index)
+CHAINBASE_SET_INDEX_TYPE(vros::chain::block_summary_object, vros::chain::block_summary_multi_index)
 
-FC_REFLECT(evt::chain::block_summary_object, (block_id))
+FC_REFLECT(vros::chain::block_summary_object, (block_id))

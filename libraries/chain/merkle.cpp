@@ -1,11 +1,11 @@
 /**
  *  @file
- *  @copyright defined in evt/LICENSE.txt
+ *  @copyright defined in vros/LICENSE.txt
  */
-#include <evt/chain/merkle.hpp>
+#include <vros/chain/merkle.hpp>
 #include <fc/io/raw.hpp>
 
-namespace evt { namespace chain {
+namespace vros { namespace chain {
 
 /**
  * in order to keep proofs concise, before hashing we set the first bit
@@ -59,4 +59,4 @@ merkle(vector<digest_type> ids) {
     return ids.front();
 }
 
-}}  // namespace evt::chain
+}}  // namespace vros::chain

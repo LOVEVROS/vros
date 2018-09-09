@@ -1,25 +1,25 @@
 /**
  *  @file
- *  @copyright defined in evt/LICENSE.txt
+ *  @copyright defined in vros/LICENSE.txt
  */
 #pragma once
 #include <functional>
 
-#include <evt/chain/controller.hpp>
-#include <evt/chain/config.hpp>
-#include <evt/chain/contracts/types.hpp>
-#include <evt/chain/contracts/types_invoker.hpp>
-#include <evt/chain/token_database.hpp>
-#include <evt/chain/types.hpp>
-#include <evt/chain/producer_schedule.hpp>
-#include <evt/utilities/parallel_markers.hpp>
+#include <vros/chain/controller.hpp>
+#include <vros/chain/config.hpp>
+#include <vros/chain/contracts/types.hpp>
+#include <vros/chain/contracts/types_invoker.hpp>
+#include <vros/chain/token_database.hpp>
+#include <vros/chain/types.hpp>
+#include <vros/chain/producer_schedule.hpp>
+#include <vros/utilities/parallel_markers.hpp>
 
 #include <fc/scoped_exit.hpp>
 
 #include <boost/algorithm/cxx11/all_of.hpp>
 #include <boost/range/algorithm/find.hpp>
 
-namespace evt { namespace chain {
+namespace vros { namespace chain {
 
 class authority_checker;
 
@@ -301,7 +301,7 @@ struct check_authority<newdomain> {
                 return true;
             }
         }
-        EVT_RETHROW_EXCEPTIONS(action_type_exception, "transaction data is not valid, data cannot cast to `newdomain` type.");
+        vros_RETHROW_EXCEPTIONS(action_type_exception, "transaction data is not valid, data cannot cast to `newdomain` type.");
         return false;
     }
 };
@@ -346,7 +346,7 @@ struct check_authority<newgroup> {
                 return true;
             }
         }
-        EVT_RETHROW_EXCEPTIONS(action_type_exception, "transaction data is not valid, data cannot cast to `newgroup` type.");
+        vros_RETHROW_EXCEPTIONS(action_type_exception, "transaction data is not valid, data cannot cast to `newgroup` type.");
         return false;
     }
 };
@@ -386,7 +386,7 @@ struct check_authority<newfungible> {
                 return true;
             }
         }
-        EVT_RETHROW_EXCEPTIONS(action_type_exception, "transation data is not valid, data cannot cast to `newfungible` type");
+        vros_RETHROW_EXCEPTIONS(action_type_exception, "transation data is not valid, data cannot cast to `newfungible` type");
         return false;
     }
 };
@@ -424,23 +424,23 @@ struct check_authority<transferft> {
                 return true;
             }
         }
-        EVT_RETHROW_EXCEPTIONS(action_type_exception, "transation data is not valid, data cannot cast to `transferft` type");
+        vros_RETHROW_EXCEPTIONS(action_type_exception, "transation data is not valid, data cannot cast to `transferft` type");
         return false;
     }
 };
 
 template<>
-struct check_authority<evt2pevt> {
+struct check_authority<vros2pvros> {
     static bool
     invoke(const action& act, authority_checker* checker) {
         try {
-            auto& ep    = act.data_as<const evt2pevt&>();
+            auto& ep    = act.data_as<const vros2pvros&>();
             auto vistor = authority_checker::weight_tally_visitor(checker);
             if(vistor(ep.from, 1) == 1) {
                 return true;
             }
         }
-        EVT_RETHROW_EXCEPTIONS(action_type_exception, "transation data is not valid, data cannot cast to `transferft` type");
+        vros_RETHROW_EXCEPTIONS(action_type_exception, "transation data is not valid, data cannot cast to `transferft` type");
         return false;
     }
 };
@@ -456,7 +456,7 @@ struct check_authority<newsuspend> {
                 return true;
             }
         }
-        EVT_RETHROW_EXCEPTIONS(action_type_exception, "transaction data is not valid, data cannot cast to `newsuspend` type.");
+        vros_RETHROW_EXCEPTIONS(action_type_exception, "transaction data is not valid, data cannot cast to `newsuspend` type.");
         return false;
     }
 };
@@ -496,7 +496,7 @@ struct check_authority<execsuspend> {
                 return true;
             }
         }
-        EVT_RETHROW_EXCEPTIONS(action_type_exception, "transaction data is not valid, data cannot cast to `execsuspend` type.");
+        vros_RETHROW_EXCEPTIONS(action_type_exception, "transaction data is not valid, data cannot cast to `execsuspend` type.");
         return false;
     }
 };
@@ -535,7 +535,7 @@ struct check_authority<addmeta> {
             }  // switch
             return ref_result;
         }
-        EVT_RETHROW_EXCEPTIONS(action_type_exception, "transaction data is not valid, data cannot cast to `addmeta` type.");
+        vros_RETHROW_EXCEPTIONS(action_type_exception, "transaction data is not valid, data cannot cast to `addmeta` type.");
     }
 };
 
@@ -573,7 +573,7 @@ struct check_authority<prodvote> {
             });
             return result;
         }
-        EVT_RETHROW_EXCEPTIONS(action_type_exception, "transaction data is not valid, data cannot cast to `prodvote` type.");
+        vros_RETHROW_EXCEPTIONS(action_type_exception, "transaction data is not valid, data cannot cast to `prodvote` type.");
     }
 };
 
@@ -588,4 +588,4 @@ struct check_authority<paycharge> {
 
 }  // namespace __internal
 
-}}  // namespace evt::chain
+}}  // namespace vros::chain

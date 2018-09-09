@@ -1,14 +1,14 @@
 /**
  *  @file
- *  @copyright defined in evt/LICENSE.txt
+ *  @copyright defined in vros/LICENSE.txt
  */
 #pragma once
 #include <type_traits>
 #include <boost/any.hpp>
-#include <evt/chain/types.hpp>
-#include <evt/chain/exceptions.hpp>
+#include <vros/chain/types.hpp>
+#include <vros/chain/exceptions.hpp>
 
-namespace evt { namespace chain {
+namespace vros { namespace chain {
 
 struct action {
 public:
@@ -41,7 +41,7 @@ public:
     data_as() const {
         if(cache_.empty()) {
             using raw_type = std::remove_const_t<std::remove_reference_t<T>>;
-            EVT_ASSERT(name == raw_type::get_name(), action_type_exception, "action name is not consistent with action struct");
+            vros_ASSERT(name == raw_type::get_name(), action_type_exception, "action name is not consistent with action struct");
             cache_ = fc::raw::unpack<raw_type>(data);
         }
         // no need to check name here, `any_cast` will throws exception if types don't match
@@ -52,6 +52,6 @@ private:
     mutable boost::any cache_;
 };
 
-}}  // namespace evt::chain
+}}  // namespace vros::chain
 
-FC_REFLECT(evt::chain::action, (name)(domain)(key)(data))
+FC_REFLECT(vros::chain::action, (name)(domain)(key)(data))

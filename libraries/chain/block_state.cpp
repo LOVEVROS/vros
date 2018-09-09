@@ -1,11 +1,11 @@
 /**
  *  @file
- *  @copyright defined in evt/LICENSE.txt
+ *  @copyright defined in vros/LICENSE.txt
  */
-#include <evt/chain/block_state.hpp>
-#include <evt/chain/exceptions.hpp>
+#include <vros/chain/block_state.hpp>
+#include <vros/chain/exceptions.hpp>
 
-namespace evt { namespace chain {
+namespace vros { namespace chain {
 
 block_state::block_state(const block_header_state& prev, block_timestamp_type when)
     : block_header_state(prev.generate_next(when))
@@ -17,4 +17,4 @@ block_state::block_state(const block_header_state& prev, signed_block_ptr b, boo
     : block_header_state(prev.next(*b, trust))
     , block(move(b)) {}
 
-}}  // namespace evt::chain
+}}  // namespace vros::chain

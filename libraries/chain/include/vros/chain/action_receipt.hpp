@@ -1,12 +1,12 @@
 /**
  *  @file
- *  @copyright defined in evt/LICENSE.txt
+ *  @copyright defined in vros/LICENSE.txt
  */
 #pragma once
 
-#include <evt/chain/types.hpp>
+#include <vros/chain/types.hpp>
 
-namespace evt { namespace chain {
+namespace vros { namespace chain {
 
 /**
     *  For each action dispatched this receipt is generated
@@ -19,6 +19,6 @@ struct action_receipt {
     digest() const { return digest_type::hash(*this); }
 };
 
-}}  // namespace evt::chain
+}}  // namespace vros::chain
 
-FC_REFLECT(evt::chain::action_receipt, (act_digest)(global_sequence))
+FC_REFLECT(vros::chain::action_receipt, (act_digest)(global_sequence))

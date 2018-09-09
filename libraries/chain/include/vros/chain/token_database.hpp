@@ -1,12 +1,12 @@
 /**
  *  @file
- *  @copyright defined in evt/LICENSE.txt
+ *  @copyright defined in vros/LICENSE.txt
 */
 #pragma once
 #include <deque>
 #include <boost/noncopyable.hpp>
-#include <evt/chain/asset.hpp>
-#include <evt/chain/contracts/types.hpp>
+#include <vros/chain/asset.hpp>
+#include <vros/chain/contracts/types.hpp>
 #include <functional>
 #include <rocksdb/options.h>
 
@@ -23,12 +23,12 @@ class DB;
 #define SETPOINTER(type, p, x) (p = reinterpret_cast<type *>((reinterpret_cast<uintptr_t>(p) & static_cast<uintptr_t>(0xFFFF000000000000UL)) | reinterpret_cast<uintptr_t>(reinterpret_cast<const void*>(x))))
 #define GETPOINTER(type, p) (reinterpret_cast<type *>(reinterpret_cast<uintptr_t>(p) & static_cast<uintptr_t>(0x0000FFFFFFFFFFFFUL)))
 #else
-#error EVT can only be compiled in X86-64 architecture
+#error vros can only be compiled in X86-64 architecture
 #endif
 
-namespace evt { namespace chain {
+namespace vros { namespace chain {
 
-using namespace evt::chain::contracts;
+using namespace vros::chain::contracts;
 using read_fungible_func = std::function<bool(const asset&)>;
 using read_prodvote_func = std::function<bool(const public_key_type& pkey, int64_t value)>;
 
@@ -226,4 +226,4 @@ private:
     std::deque<savepoint>        savepoints_;
 };
 
-}}  // namespace evt::chain
+}}  // namespace vros::chain

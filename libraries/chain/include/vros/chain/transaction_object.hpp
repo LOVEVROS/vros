@@ -1,15 +1,15 @@
 /**
  *  @file
- *  @copyright defined in evt/LICENSE.txt
+ *  @copyright defined in vros/LICENSE.txt
  */
 #pragma once
 #include <boost/multi_index/hashed_index.hpp>
 #include <boost/multi_index/mem_fun.hpp>
 
-#include <evt/chain/transaction.hpp>
-#include <evt/chain/multi_index_includes.hpp>
+#include <vros/chain/transaction.hpp>
+#include <vros/chain/multi_index_includes.hpp>
 
-namespace evt { namespace chain {
+namespace vros { namespace chain {
 using boost::multi_index_container;
 using namespace boost::multi_index;
 /**
@@ -39,6 +39,6 @@ using transaction_multi_index = chainbase::shared_multi_index_container<
 
 typedef chainbase::generic_index<transaction_multi_index> transaction_index;
 
-}}  // namespace evt::chain
+}}  // namespace vros::chain
 
-CHAINBASE_SET_INDEX_TYPE(evt::chain::transaction_object, evt::chain::transaction_multi_index)
+CHAINBASE_SET_INDEX_TYPE(vros::chain::transaction_object, vros::chain::transaction_multi_index)

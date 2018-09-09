@@ -1,30 +1,30 @@
 /**
  *  @file
- *  @copyright defined in evt/LICENSE.txt
+ *  @copyright defined in vros/LICENSE.txt
  */
-#include <evt/chain/controller.hpp>
-#include <evt/chain/transaction_context.hpp>
+#include <vros/chain/controller.hpp>
+#include <vros/chain/transaction_context.hpp>
 
-#include <evt/chain/authority_checker.hpp>
-#include <evt/chain/block_log.hpp>
-#include <evt/chain/fork_database.hpp>
-#include <evt/chain/token_database.hpp>
-#include <evt/chain/charge_manager.hpp>
+#include <vros/chain/authority_checker.hpp>
+#include <vros/chain/block_log.hpp>
+#include <vros/chain/fork_database.hpp>
+#include <vros/chain/token_database.hpp>
+#include <vros/chain/charge_manager.hpp>
 
-#include <evt/chain/block_summary_object.hpp>
-#include <evt/chain/global_property_object.hpp>
-#include <evt/chain/transaction_object.hpp>
-#include <evt/chain/reversible_block_object.hpp>
-#include <evt/chain/contracts/evt_link_object.hpp>
+#include <vros/chain/block_summary_object.hpp>
+#include <vros/chain/global_property_object.hpp>
+#include <vros/chain/transaction_object.hpp>
+#include <vros/chain/reversible_block_object.hpp>
+#include <vros/chain/contracts/vros_link_object.hpp>
 
 #include <chainbase/chainbase.hpp>
 #include <fc/io/json.hpp>
 #include <fc/scoped_exit.hpp>
 
-#include <evt/chain/contracts/evt_contract.hpp>
-#include <evt/chain/contracts/evt_org.hpp>
+#include <vros/chain/contracts/vros_contract.hpp>
+#include <vros/chain/contracts/vros_org.hpp>
 
-namespace evt { namespace chain {
+namespace vros { namespace chain {
 
 struct pending_state {
     pending_state(database::session&& s, token_database::session&& ts)
@@ -75,7 +75,7 @@ struct controller_impl {
     void
     pop_block() {
         auto prev = fork_db.get_block(head->header.previous);
-        EVT_ASSERT(prev, block_validate_exception, "attempt to pop beyond last irreversible block");
+        vros_ASSERT(prev, block_validate_exception, "attempt to pop beyond last irreversible block");
 
         if(const auto* b = reversible_blocks.find<reversible_block_object,by_num>(head->block_num)) {
             reversible_blocks.remove(*b);
@@ -102,7 +102,7 @@ struct controller_impl {
         , token_db(cfg.tokendb_dir)
         , conf(cfg)
         , chain_id(cfg.genesis.compute_chain_id())
-        , system_api(contracts::evt_contract_abi()) {
+        , system_api(contracts::vros_contract_abi()) {
 
         fork_db.irreversible.connect([&](auto b) {
             on_irreversible(b);
@@ -146,7 +146,7 @@ struct controller_impl {
             blog.read_head();
 
         const auto& log_head = blog.head();
-        EVT_ASSERT(log_head, block_log_exception, "block log head can not be found");
+        vros_ASSERT(log_head, block_log_exception, "block log head can not be found");
         auto lh_block_num = log_head->block_num();
 
         db.commit(s->block_num);
@@ -156,8 +156,8 @@ struct controller_impl {
             return;
         }
 
-        EVT_ASSERT(s->block_num - 1 == lh_block_num, unlinkable_block_exception, "unlinkable block", ("s->block_num",s->block_num)("lh_block_num", lh_block_num));
-        EVT_ASSERT(s->block->previous == log_head->id(), unlinkable_block_exception, "irreversible doesn't link to block log head");
+        vros_ASSERT(s->block_num - 1 == lh_block_num, unlinkable_block_exception, "unlinkable block", ("s->block_num",s->block_num)("lh_block_num", lh_block_num));
+        vros_ASSERT(s->block->previous == log_head->id(), unlinkable_block_exception, "irreversible doesn't link to block log head");
         blog.append(s->block);
 
         const auto& ubi = reversible_blocks.get_index<reversible_block_index,by_num>();
@@ -217,18 +217,18 @@ struct controller_impl {
         const auto& ubi = reversible_blocks.get_index<reversible_block_index,by_num>();
         auto objitr = ubi.rbegin();
         if(objitr != ubi.rend()) {
-            EVT_ASSERT(objitr->blocknum == head->block_num, fork_database_exception,
+            vros_ASSERT(objitr->blocknum == head->block_num, fork_database_exception,
                 "reversible block database is inconsistent with fork database, replay blockchain",
                 ("head",head->block_num)("unconfimed", objitr->blocknum));
         }
         else {
             auto end = blog.read_head();
-            EVT_ASSERT(end && end->block_num() == head->block_num, fork_database_exception,
+            vros_ASSERT(end && end->block_num() == head->block_num, fork_database_exception,
                 "fork database exists but reversible block database does not, replay blockchain",
                 ("blog_head",end->block_num())("head",head->block_num));
         }
 
-        EVT_ASSERT(db.revision() >= head->block_num, fork_database_exception, "fork database is inconsistent with shared memory",
+        vros_ASSERT(db.revision() >= head->block_num, fork_database_exception, "fork database is inconsistent with shared memory",
             ("db",db.revision())("head",head->block_num));
 
         if(db.revision() > head->block_num) {
@@ -256,7 +256,7 @@ struct controller_impl {
         db.add_index<dynamic_global_property_multi_index>();
         db.add_index<block_summary_multi_index>();
         db.add_index<transaction_multi_index>();
-        db.add_index<evt_link_multi_index>();
+        db.add_index<vros_link_multi_index>();
     }
 
     /**
@@ -265,7 +265,7 @@ struct controller_impl {
     void
     initialize_fork_db() {
         wlog(" Initializing new blockchain with genesis state");
-        producer_schedule_type initial_schedule{0, {{N128(evt), conf.genesis.initial_key}}};
+        producer_schedule_type initial_schedule{0, {{N128(vros), conf.genesis.initial_key}}};
 
         block_header_state genheader;
         genheader.active_schedule       = initial_schedule;
@@ -339,7 +339,7 @@ struct controller_impl {
             FC_ASSERT(r == 0, "Add `.fungible` domain failed");
         }
 
-        initialize_evt_org(token_db, conf.genesis);
+        initialize_vros_org(token_db, conf.genesis);
     }
 
     /**
@@ -357,7 +357,7 @@ struct controller_impl {
                 auto new_bsp = fork_db.add(pending->_pending_block_state);
                 emit(self.accepted_block_header, pending->_pending_block_state);
                 head = fork_db.head();
-                EVT_ASSERT(new_bsp == head, fork_database_exception, "committed block did not become the new head in fork database");
+                vros_ASSERT(new_bsp == head, fork_database_exception, "committed block did not become the new head in fork database");
             }
 
             if(!replaying) {
@@ -424,7 +424,7 @@ struct controller_impl {
 
         auto checker = authority_checker(self, signed_keys, token_db, conf.max_authority_depth);
         for(const auto& act : trx.actions) {
-            EVT_ASSERT(checker.satisfied(act), unsatisfied_authorization,
+            vros_ASSERT(checker.satisfied(act), unsatisfied_authorization,
                        "${name} action in domain: ${domain} with key: ${key} authorized failed",
                        ("domain", act.domain)("key", act.key)("name", act.name));
         }
@@ -435,7 +435,7 @@ struct controller_impl {
         auto& conf = db.get<global_property_object>().configuration;
 
         auto checker = authority_checker(self, signed_keys, token_db, conf.max_authority_depth);
-        EVT_ASSERT(checker.satisfied(act), unsatisfied_authorization,
+        vros_ASSERT(checker.satisfied(act), unsatisfied_authorization,
                    "${name} action in domain: ${domain} with key: ${key} authorized failed",
                    ("domain", act.domain)("key", act.key)("name", act.name));
     }
@@ -504,7 +504,7 @@ struct controller_impl {
     push_transaction(const transaction_metadata_ptr& trx,
                      fc::time_point                  deadline,
                      bool                            implicit) {
-        EVT_ASSERT(deadline != fc::time_point(), transaction_exception, "deadline cannot be uninitialized");
+        vros_ASSERT(deadline != fc::time_point(), transaction_exception, "deadline cannot be uninitialized");
 
         transaction_trace_ptr trace;
         try {
@@ -574,9 +574,9 @@ struct controller_impl {
 
     void
     start_block(block_timestamp_type when, uint16_t confirm_block_count, controller::block_status s) {
-        EVT_ASSERT(!pending, block_validate_exception, "pending block is not available");
+        vros_ASSERT(!pending, block_validate_exception, "pending block is not available");
 
-        EVT_ASSERT(db.revision() == head->block_num, database_exception, "db revision is not on par with head block",
+        vros_ASSERT(db.revision() == head->block_num, database_exception, "db revision is not on par with head block",
                   ("db.revision()", db.revision())("controller_head_block", head->block_num)("fork_db_head_block", fork_db.head()->block_num));
 
         auto guard_pending = fc::make_scoped_exit([this]() {
@@ -630,7 +630,7 @@ struct controller_impl {
     apply_block(const signed_block_ptr& b, controller::block_status s) {
         try {
             try {
-                EVT_ASSERT(b->block_extensions.size() == 0, block_validate_exception, "no supported extensions");
+                vros_ASSERT(b->block_extensions.size() == 0, block_validate_exception, "no supported extensions");
                 start_block(b->timestamp, b->confirmed, s);
 
                 auto num_pending_receipts = pending->_pending_block_state->block->transactions.size();
@@ -649,7 +649,7 @@ struct controller_impl {
                         continue;
                     }
                     else {
-                        EVT_ASSERT(false, block_validate_exception, "encountered unexpected receipt type");
+                        vros_ASSERT(false, block_validate_exception, "encountered unexpected receipt type");
                     }
 
                     auto transaction_failed = trace && trace->except;
@@ -657,16 +657,16 @@ struct controller_impl {
                         edump((*trace));
                         throw *trace->except;
                     }
-                    EVT_ASSERT(pending->_pending_block_state->block->transactions.size() > 0,
+                    vros_ASSERT(pending->_pending_block_state->block->transactions.size() > 0,
                                block_validate_exception, "expected a receipt",
                                ("block", *b)("expected_receipt", receipt)
                                );
-                    EVT_ASSERT(pending->_pending_block_state->block->transactions.size() == num_pending_receipts + 1,
+                    vros_ASSERT(pending->_pending_block_state->block->transactions.size() == num_pending_receipts + 1,
                                block_validate_exception, "expected receipt was not added",
                                ("block", *b)("expected_receipt", receipt)
                                );
                     auto& r = pending->_pending_block_state->block->transactions.back();
-                    EVT_ASSERT(r == static_cast<const transaction_receipt_header&>(receipt),
+                    vros_ASSERT(r == static_cast<const transaction_receipt_header&>(receipt),
                                block_validate_exception, "receipt does not match",
                               ("producer_receipt", receipt)("validator_receipt", pending->_pending_block_state->block->transactions.back())
                               );
@@ -677,7 +677,7 @@ struct controller_impl {
                 finalize_block();
 
                 // this implicitly asserts that all header fields (less the signature) are identical
-                EVT_ASSERT(b->id() == pending->_pending_block_state->header.id(),
+                vros_ASSERT(b->id() == pending->_pending_block_state->header.id(),
                        block_validate_exception, "Block ID does not match",
                        ("producer_block_id",b->id())("validator_block_id",pending->_pending_block_state->header.id()));
 
@@ -706,10 +706,10 @@ struct controller_impl {
     void
     push_block(const signed_block_ptr& b, controller::block_status s) {
         //  idump((fc::json::to_pretty_string(*b)));
-        EVT_ASSERT(!pending, block_validate_exception, "it is not valid to push a block when there is a pending block");
+        vros_ASSERT(!pending, block_validate_exception, "it is not valid to push a block when there is a pending block");
         try {
-            EVT_ASSERT(b, block_validate_exception, "trying to push empty block");
-            EVT_ASSERT(s != controller::block_status::incomplete, block_validate_exception, "invalid block status for a completed block");
+            vros_ASSERT(b, block_validate_exception, "trying to push empty block");
+            vros_ASSERT(s != controller::block_status::incomplete, block_validate_exception, "invalid block status for a completed block");
             emit(self.pre_accepted_block, b);
 
             bool trust = !conf.force_all_checks && (s == controller::block_status::irreversible || s == controller::block_status::validated);
@@ -726,7 +726,7 @@ struct controller_impl {
 
     void
     push_confirmation(const header_confirmation& c) {
-        EVT_ASSERT(!pending, block_validate_exception, "it is not valid to push a confirmation when there is a pending block");
+        vros_ASSERT(!pending, block_validate_exception, "it is not valid to push a confirmation when there is a pending block");
         fork_db.add(c);
         emit(self.accepted_confirmation, c);
         maybe_switch_forks();
@@ -757,7 +757,7 @@ struct controller_impl {
                 fork_db.mark_in_current_chain(*itr, false);
                 pop_block();
             }
-            EVT_ASSERT(self.head_block_id() == branches.second.back()->header.previous, fork_database_exception,
+            vros_ASSERT(self.head_block_id() == branches.second.back()->header.previous, fork_database_exception,
                       "loss of sync between fork_db and chainbase during fork switch");  // _should_ never fail
 
             for(auto ritr = branches.first.rbegin(); ritr != branches.first.rend(); ++ritr) {
@@ -785,7 +785,7 @@ struct controller_impl {
                         fork_db.mark_in_current_chain(*itr, false);
                         pop_block();
                     }
-                    EVT_ASSERT(self.head_block_id() == branches.second.back()->header.previous, fork_database_exception,
+                    vros_ASSERT(self.head_block_id() == branches.second.back()->header.previous, fork_database_exception,
                               "loss of sync between fork_db and chainbase during fork switch reversal");  // _should_ never fail
 
                     // re-apply good blocks
@@ -841,7 +841,7 @@ struct controller_impl {
 
     void
     finalize_block() {
-        EVT_ASSERT(pending, block_validate_exception, "it is not valid to finalize when there is no pending block");
+        vros_ASSERT(pending, block_validate_exception, "it is not valid to finalize when there is no pending block");
         try {
             /*
       ilog( "finalize block ${n} (${id}) at ${t} by ${p} (${signing_key}); schedule_version: ${v} lib: ${lib} #dtrxs: ${ndtrxs} ${np}",
@@ -1055,7 +1055,7 @@ controller::pending_block_state() const {
 }
 time_point
 controller::pending_block_time() const {
-    EVT_ASSERT(my->pending, block_validate_exception, "no pending block");
+    vros_ASSERT(my->pending, block_validate_exception, "no pending block");
     return my->pending->_pending_block_state->header.timestamp;
 }
 
@@ -1137,7 +1137,7 @@ controller::get_block_id_for_num(uint32_t block_num) const {
 
         auto signed_blk = my->blog.read_block_by_num(block_num);
 
-        EVT_ASSERT(BOOST_LIKELY(signed_blk != nullptr), unknown_block_exception,
+        vros_ASSERT(BOOST_LIKELY(signed_blk != nullptr), unknown_block_exception,
                    "Could not find block: ${block}", ("block", block_num));
 
         return signed_blk->id();
@@ -1148,10 +1148,10 @@ controller::get_block_id_for_num(uint32_t block_num) const {
 transaction_id_type
 controller::get_trx_id_for_link_id(const link_id_type& link_id) const {
     try {
-        if(const auto* l = my->db.find<evt_link_object, by_link_id>(link_id)) {
+        if(const auto* l = my->db.find<vros_link_object, by_link_id>(link_id)) {
             return l->trx_id;
         }
-        EVT_THROW(evt_link_existed_exception, "EVT-Link is not existed");
+        vros_THROW(vros_link_existed_exception, "vros-Link is not existed");
     }
     FC_CAPTURE_AND_RETHROW((link_id))
 }
@@ -1295,12 +1295,12 @@ controller::validate_expiration(const transaction& trx) const {
     try {
         const auto& chain_configuration = get_global_properties().configuration;
 
-        EVT_ASSERT(time_point(trx.expiration) >= pending_block_time(),
+        vros_ASSERT(time_point(trx.expiration) >= pending_block_time(),
                    expired_tx_exception,
                    "transaction has expired, "
                    "expiration is ${trx.expiration} and pending block time is ${pending_block_time}",
                    ("trx.expiration", trx.expiration)("pending_block_time", pending_block_time()));
-        EVT_ASSERT(time_point(trx.expiration) <= pending_block_time() + fc::seconds(chain_configuration.max_transaction_lifetime),
+        vros_ASSERT(time_point(trx.expiration) <= pending_block_time() + fc::seconds(chain_configuration.max_transaction_lifetime),
                    tx_exp_too_far_exception,
                    "Transaction expiration is too far in the future relative to the reference time of ${reference_time}, "
                    "expiration is ${trx.expiration} and the maximum transaction lifetime is ${max_til_exp} seconds",
@@ -1315,7 +1315,7 @@ controller::validate_tapos(const transaction& trx) const {
         const auto& tapos_block_summary = db().get<block_summary_object>((uint16_t)trx.ref_block_num);
 
         //Verify TaPoS block summary has correct ID prefix, and that this block's time is not past the expiration
-        EVT_ASSERT(trx.verify_reference_block(tapos_block_summary.block_id), invalid_ref_block_exception,
+        vros_ASSERT(trx.verify_reference_block(tapos_block_summary.block_id), invalid_ref_block_exception,
                    "Transaction's reference block did not match. Is this transaction from a different fork?",
                    ("tapos_summary", tapos_block_summary));
     }
@@ -1326,14 +1326,14 @@ void
 controller::validate_db_available_size() const {
    const auto free = db().get_segment_manager()->get_free_memory();
    const auto guard = my->conf.state_guard_size;
-   EVT_ASSERT(free >= guard, database_guard_exception, "database free: ${f}, guard size: ${g}", ("f", free)("g",guard));
+   vros_ASSERT(free >= guard, database_guard_exception, "database free: ${f}, guard size: ${g}", ("f", free)("g",guard));
 }
 
 void
 controller::validate_reversible_available_size() const {
    const auto free = my->reversible_blocks.get_segment_manager()->get_free_memory();
    const auto guard = my->conf.reversible_guard_size;
-   EVT_ASSERT(free >= guard, reversible_guard_exception, "reversible free: ${f}, guard size: ${g}", ("f", free)("g",guard));
+   vros_ASSERT(free >= guard, reversible_guard_exception, "reversible free: ${f}, guard size: ${g}", ("f", free)("g",guard));
 }
 
 bool
@@ -1347,7 +1347,7 @@ controller::get_required_keys(const transaction& trx, const flat_set<public_key_
     auto checker = authority_checker(*this, candidate_keys, my->token_db, max_authority_depth);
 
     for(const auto& act : trx.actions) {
-        EVT_ASSERT(checker.satisfied(act), unsatisfied_authorization,
+        vros_ASSERT(checker.satisfied(act), unsatisfied_authorization,
                    "${name} action in domain: ${domain} with key: ${key} authorized failed",
                    ("domain", act.domain)("key", act.key)("name", act.name));
     }
@@ -1390,4 +1390,4 @@ controller::get_charge(const transaction& trx, size_t signautres_num) const {
     return charge.calculate(packed_trx, signautres_num);
 }
 
-}}  // namespace evt::chain
+}}  // namespace vros::chain

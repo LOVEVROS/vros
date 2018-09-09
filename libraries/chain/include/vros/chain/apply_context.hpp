@@ -1,11 +1,11 @@
 /**
  *  @file
- *  @copyright defined in evt/LICENSE.txt
+ *  @copyright defined in vros/LICENSE.txt
  */
 #pragma once
 #include <algorithm>
 #include <boost/noncopyable.hpp>
-#include <evt/chain/controller.hpp>
+#include <vros/chain/controller.hpp>
 #include <fc/utility.hpp>
 #include <sstream>
 
@@ -13,7 +13,7 @@ namespace chainbase {
 class database;
 }
 
-namespace evt { namespace chain {
+namespace vros { namespace chain {
 
 class transaction_context;
 
@@ -79,4 +79,4 @@ private:
     std::ostringstream _pending_console_output;
 };
 
-}}  // namespace evt::chain
+}}  // namespace vros::chain

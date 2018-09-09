@@ -1,17 +1,17 @@
 /**
  *  @file
- *  @copyright defined in evt/LICENSE.txt
+ *  @copyright defined in vros/LICENSE.txt
  */
 #pragma once
 
 #include <string>
 #include <functional>
 #include <fc/reflect/reflect.hpp>
-#include <evt/chain/types.hpp>
-#include <evt/chain/address.hpp>
-#include <evt/chain/contracts/metadata.hpp>
+#include <vros/chain/types.hpp>
+#include <vros/chain/address.hpp>
+#include <vros/chain/contracts/metadata.hpp>
 
-namespace evt { namespace chain { namespace contracts {
+namespace vros { namespace chain { namespace contracts {
 
 class group {
 public:
@@ -73,15 +73,15 @@ public:
     meta_list                       metas_;
 };
 
-}}}  // namespac evt::chain::contracts
+}}}  // namespac vros::chain::contracts
 
 namespace fc {
 
 class variant;
-void to_variant(const evt::chain::contracts::group& group, fc::variant& v);
-void from_variant(const fc::variant& v, evt::chain::contracts::group& group);
+void to_variant(const vros::chain::contracts::group& group, fc::variant& v);
+void from_variant(const fc::variant& v, vros::chain::contracts::group& group);
 
 }  // namespace fc
 
-FC_REFLECT(evt::chain::contracts::group::node, (weight)(threshold)(index)(size))
-FC_REFLECT(evt::chain::contracts::group, (name_)(key_)(nodes_)(keys_)(metas_))
+FC_REFLECT(vros::chain::contracts::group::node, (weight)(threshold)(index)(size))
+FC_REFLECT(vros::chain::contracts::group, (name_)(key_)(nodes_)(keys_)(metas_))

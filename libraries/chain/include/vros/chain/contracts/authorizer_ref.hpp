@@ -1,6 +1,6 @@
 /**
  *  @file
- *  @copyright defined in evt/LICENSE.txt
+ *  @copyright defined in vros/LICENSE.txt
  */
 #pragma once
 
@@ -8,9 +8,9 @@
 #include <fc/reflect/reflect.hpp>
 #include <fc/variant.hpp>
 #include <fc/array.hpp>
-#include <evt/chain/types.hpp>
+#include <vros/chain/types.hpp>
 
-namespace evt { namespace chain { namespace contracts {
+namespace vros { namespace chain { namespace contracts {
 
 struct authorizer_ref {
 public:
@@ -69,14 +69,14 @@ private:
     friend struct fc::reflector<authorizer_ref>;
 };
 
-}}}  // namespac evt::chain::contracts
+}}}  // namespac vros::chain::contracts
 
 namespace fc {
 
 class variant;
-void to_variant(const evt::chain::contracts::authorizer_ref& ref, fc::variant& v);
-void from_variant(const fc::variant& v, evt::chain::contracts::authorizer_ref& ref);
+void to_variant(const vros::chain::contracts::authorizer_ref& ref, fc::variant& v);
+void from_variant(const fc::variant& v, vros::chain::contracts::authorizer_ref& ref);
 
 }  // namespace fc
 
-FC_REFLECT(evt::chain::contracts::authorizer_ref, (storage_))
+FC_REFLECT(vros::chain::contracts::authorizer_ref, (storage_))

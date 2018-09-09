@@ -1,17 +1,17 @@
 /**
  *  @file
- *  @copyright defined in evt/LICENSE.txt
+ *  @copyright defined in vros/LICENSE.txt
  */
 #pragma once
 #include <boost/noncopyable.hpp>
 #include <fc/variant_object.hpp>
 
-#include <evt/chain/contracts/types.hpp>
-#include <evt/chain/contracts/abi_types.hpp>
-#include <evt/chain/exceptions.hpp>
-#include <evt/chain/trace.hpp>
+#include <vros/chain/contracts/types.hpp>
+#include <vros/chain/contracts/abi_types.hpp>
+#include <vros/chain/exceptions.hpp>
+#include <vros/chain/trace.hpp>
 
-namespace evt { namespace chain { namespace contracts {
+namespace vros { namespace chain { namespace contracts {
 
 using std::function;
 using std::map;
@@ -476,7 +476,7 @@ struct abi_from_variant {
             }
         }
 
-        EVT_ASSERT(valid_empty_data || !act.data.empty(), packed_transaction_type_exception,
+        vros_ASSERT(valid_empty_data || !act.data.empty(), packed_transaction_type_exception,
                    "Failed to deserialize data for ${name}", ("name", act.name));
     }
 
@@ -486,8 +486,8 @@ struct abi_from_variant {
         FC_ASSERT(++recursion_depth < abi_serializer::max_recursion_depth, "recursive definition, max_recursion_depth ${r} ", ("r", abi_serializer::max_recursion_depth));
         FC_ASSERT(fc::time_point::now() < deadline, "serialization time limit ${t}us exceeded", ("t", abi_serializer::max_serialization_time));
         const variant_object& vo = v.get_object();
-        EVT_ASSERT(vo.contains("signatures"), packed_transaction_type_exception, "Missing signatures");
-        EVT_ASSERT(vo.contains("compression"), packed_transaction_type_exception, "Missing compression");
+        vros_ASSERT(vo.contains("signatures"), packed_transaction_type_exception, "Missing signatures");
+        vros_ASSERT(vo.contains("compression"), packed_transaction_type_exception, "Missing compression");
         from_variant(vo["signatures"], ptrx.signatures);
         from_variant(vo["compression"], ptrx.compression);
 
@@ -496,7 +496,7 @@ struct abi_from_variant {
             auto trx = ptrx.get_transaction();  // Validates transaction data provided.
         }
         else {
-            EVT_ASSERT(vo.contains("transaction"), packed_transaction_type_exception, "Missing transaction");
+            vros_ASSERT(vo.contains("transaction"), packed_transaction_type_exception, "Missing transaction");
             transaction trx;
             extract(vo["transaction"], trx, resolver, recursion_depth, deadline);
             ptrx.set_transaction(trx, ptrx.compression);
@@ -584,4 +584,4 @@ abi_serializer::from_variant(const variant& v, T& o, Resolver resolver) {
     FC_RETHROW_EXCEPTIONS(error, "Failed to deserialize variant", ("variant", v))
 }
 
-}}}  // namespace evt::chain::contracts
+}}}  // namespace vros::chain::contracts

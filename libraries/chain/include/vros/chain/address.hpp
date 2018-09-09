@@ -1,6 +1,6 @@
 /**
  *  @file
- *  @copyright defined in evt/LICENSE.txt
+ *  @copyright defined in vros/LICENSE.txt
  */
 #pragma once
 
@@ -8,10 +8,10 @@
 #include <fc/reflect/reflect.hpp>
 #include <fc/variant.hpp>
 #include <fc/array.hpp>
-#include <evt/chain/types.hpp>
-#include <evt/chain/exceptions.hpp>
+#include <vros/chain/types.hpp>
+#include <vros/chain/exceptions.hpp>
 
-namespace evt { namespace chain {
+namespace vros { namespace chain {
 
 namespace __internal {
 
@@ -170,14 +170,14 @@ private:
     friend struct fc::reflector<address>;
 };
 
-}}  // namespace evt::chain
+}}  // namespace vros::chain
 
 namespace fc {
 
 class variant;
-void to_variant(const evt::chain::address& addr, fc::variant& v);
-void from_variant(const fc::variant& v, evt::chain::address& addr);
+void to_variant(const vros::chain::address& addr, fc::variant& v);
+void from_variant(const fc::variant& v, vros::chain::address& addr);
 
 }  // namespace fc
 
-FC_REFLECT(evt::chain::address, (storage_))
+FC_REFLECT(vros::chain::address, (storage_))

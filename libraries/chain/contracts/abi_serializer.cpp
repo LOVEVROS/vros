@@ -1,20 +1,20 @@
 /**
  *  @file
- *  @copyright defined in evt/LICENSE.txt
+ *  @copyright defined in vros/LICENSE.txt
  */
-#include <evt/chain/contracts/abi_serializer.hpp>
+#include <vros/chain/contracts/abi_serializer.hpp>
 
 #include <boost/algorithm/string/predicate.hpp>
 #include <fc/io/raw.hpp>
 #include <fc/io/varint.hpp>
 
-#include <evt/chain/chain_config.hpp>
-#include <evt/chain/transaction.hpp>
-#include <evt/chain/contracts/types.hpp>
+#include <vros/chain/chain_config.hpp>
+#include <vros/chain/transaction.hpp>
+#include <vros/chain/contracts/types.hpp>
 
 using namespace boost;
 
-namespace evt { namespace chain { namespace contracts {
+namespace vros { namespace chain { namespace contracts {
 
 using boost::algorithm::ends_with;
 using std::string;
@@ -100,7 +100,7 @@ abi_serializer::configure_built_in_types() {
     built_in_types.emplace("authorizer_ref", pack_unpack<authorizer_ref>());
     built_in_types.emplace("producer_schedule", pack_unpack<producer_schedule_type>());
     built_in_types.emplace("extensions", pack_unpack<extensions_type>());
-    built_in_types.emplace("evt_link", pack_unpack<evt_link>());
+    built_in_types.emplace("vros_link", pack_unpack<vros_link>());
 }
 
 void
@@ -437,4 +437,4 @@ abi_serializer::get_action_type(name action) const {
     return type_name();
 }
 
-}}}  // namespace evt::chain::contracts
+}}}  // namespace vros::chain::contracts

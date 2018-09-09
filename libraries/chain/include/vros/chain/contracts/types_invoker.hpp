@@ -1,14 +1,14 @@
 /**
  *  @file
- *  @copyright defined in evt/LICENSE.txt
+ *  @copyright defined in vros/LICENSE.txt
  */
 #pragma once
 
 #include <utility>
 #include <type_traits>
-#include <evt/chain/contracts/types.hpp>
+#include <vros/chain/contracts/types.hpp>
 
-namespace evt { namespace chain { namespace contracts {
+namespace vros { namespace chain { namespace contracts {
 
 #define case_act(name)                                                 \
     case N(name): {                                                    \
@@ -40,7 +40,7 @@ invoke(name n, Args&&... args) {
     case_act(updfungible)
     case_act(issuefungible)
     case_act(transferft)
-    case_act(evt2pevt)
+    case_act(vros2pvros)
     case_act(addmeta)
     case_act(newsuspend)
     case_act(cancelsuspend)
@@ -51,7 +51,7 @@ invoke(name n, Args&&... args) {
     case_act(everipay)
     case_act(prodvote)
     default: {
-        EVT_THROW(action_type_exception, "Unknown action name: ${name}", ("name",n));
+        vros_THROW(action_type_exception, "Unknown action name: ${name}", ("name",n));
     }
     }  // switch
 }
@@ -60,4 +60,4 @@ invoke(name n, Args&&... args) {
 
 #undef case_act
 
-}}}  // namespace evt::chain::contracts
+}}}  // namespace vros::chain::contracts

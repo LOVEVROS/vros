@@ -1,6 +1,6 @@
 /**
  *  @file
- *  @copyright defined in evt/LICENSE.txt
+ *  @copyright defined in vros/LICENSE.txt
  */
 #pragma once
 #include <cstdint>
@@ -26,9 +26,9 @@
 #include <fc/static_variant.hpp>
 #include <fc/string.hpp>
 
-#include <evt/chain/name.hpp>
-#include <evt/chain/name128.hpp>
-#include <evt/chain/chain_id_type.hpp>
+#include <vros/chain/name.hpp>
+#include <vros/chain/name128.hpp>
+#include <vros/chain/chain_id_type.hpp>
 
 #define OBJECT_CTOR1(NAME)                                   \
     NAME() = delete;                                         \
@@ -52,7 +52,7 @@ public:                                                                \
     BOOST_PP_OVERLOAD(OBJECT_CTOR, __VA_ARGS__) \
     (__VA_ARGS__)
 
-namespace evt { namespace chain {
+namespace vros { namespace chain {
 using std::all_of;
 using std::deque;
 using std::enable_shared_from_this;
@@ -129,7 +129,7 @@ enum object_type {
     block_summary_object_type,
     transaction_object_type,
     reversible_block_object_type,
-    evt_link_object_type,
+    vros_link_object_type,
     OBJECT_TYPE_COUNT  ///< Sentry value which contains the number of different object types
 };
 
@@ -158,7 +158,7 @@ using bytes               = vector<char>;
  */
 typedef vector<std::pair<uint16_t, vector<char>>> extensions_type;
 
-}}  // namespace evt::chain
+}}  // namespace vros::chain
 
 namespace std {
 
@@ -182,8 +182,8 @@ operator<<(std::ostream& o, const __uint128_t v) {
 }  // namespace std
 
 FC_REFLECT_ENUM(
-    evt::chain::object_type,
+    vros::chain::object_type,
     (null_object_type)(global_property_object_type)(dynamic_global_property_object_type)
-    (block_summary_object_type)(transaction_object_type)(reversible_block_object_type)(evt_link_object_type)
+    (block_summary_object_type)(transaction_object_type)(reversible_block_object_type)(vros_link_object_type)
     (OBJECT_TYPE_COUNT))
-FC_REFLECT(evt::chain::void_t, )
+FC_REFLECT(vros::chain::void_t, )

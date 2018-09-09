@@ -1,20 +1,20 @@
 /**
  *  @file
- *  @copyright defined in evt/LICENSE.txt
+ *  @copyright defined in vros/LICENSE.txt
  */
 #pragma once
 #include <math.h>
 #include <tuple>
-#include <evt/chain/transaction.hpp>
-#include <evt/chain/action.hpp>
-#include <evt/chain/config.hpp>
-#include <evt/chain/chain_config.hpp>
-#include <evt/chain/controller.hpp>
-#include <evt/chain/global_property_object.hpp>
-#include <evt/chain/contracts/types.hpp>
-#include <evt/chain/contracts/types_invoker.hpp>
+#include <vros/chain/transaction.hpp>
+#include <vros/chain/action.hpp>
+#include <vros/chain/config.hpp>
+#include <vros/chain/chain_config.hpp>
+#include <vros/chain/controller.hpp>
+#include <vros/chain/global_property_object.hpp>
+#include <vros/chain/contracts/types.hpp>
+#include <vros/chain/contracts/types_invoker.hpp>
 
-namespace evt { namespace chain {
+namespace vros { namespace chain {
 
 using act_charge_result = std::tuple<uint32_t, uint32_t>;
 
@@ -85,7 +85,7 @@ public:
     uint32_t
     calculate(const packed_transaction& ptrx, size_t sig_num = 0) {
         using namespace __internal;
-        EVT_ASSERT(!ptrx.get_transaction().actions.empty(), tx_no_action, "There's not any actions in this transaction");
+        vros_ASSERT(!ptrx.get_transaction().actions.empty(), tx_no_action, "There's not any actions in this transaction");
 
         sig_num = std::max(sig_num, ptrx.signatures.size());
 
@@ -154,8 +154,8 @@ struct act_charge<issuefungible> : public base_act_charge {
     extra_factor(const action& act) {
         auto& ifact = act.data_as<const issuefungible&>();
         auto sym = ifact.number.sym();
-        // set charge to zero when issuing EVT
-        if(sym == evt_sym()) {
+        // set charge to zero when issuing vros
+        if(sym == vros_sym()) {
             return 0;
         }
         return 1;
@@ -164,4 +164,4 @@ struct act_charge<issuefungible> : public base_act_charge {
 
 }  // namespace __internal
 
-}}  // namespace evt::chain
+}}  // namespace vros::chain

@@ -1,8 +1,8 @@
 /**
  *  @file
- *  @copyright defined in evt/LICENSE.txt
+ *  @copyright defined in vros/LICENSE.txt
  */
-#include <evt/chain/token_database.hpp>
+#include <vros/chain/token_database.hpp>
 
 #include <unordered_set>
 #include <fstream>
@@ -22,11 +22,11 @@
 #include <fc/io/datastream.hpp>
 #include <fc/io/raw.hpp>
 
-#include <evt/chain/exceptions.hpp>
+#include <vros/chain/exceptions.hpp>
 
-namespace evt { namespace chain {
+namespace vros { namespace chain {
 
-using namespace evt::chain;
+using namespace vros::chain;
 
 namespace __internal {
 
@@ -312,12 +312,12 @@ token_database::initialize(const fc::path& dbpath) {
 
         auto status = DB::Open(options, db_path_, &db_);
         if(!status.ok()) {
-            EVT_THROW(tokendb_rocksdb_exception, "Rocksdb internal error: ${err}", ("err", status.getState()));
+            vros_THROW(tokendb_rocksdb_exception, "Rocksdb internal error: ${err}", ("err", status.getState()));
         }
 
         status = db_->CreateColumnFamily(assets_opts, AssetsColumnFamilyName, &assets_handle_);
         if(!status.ok()) {
-            EVT_THROW(tokendb_rocksdb_exception, "Rocksdb internal error: ${err}", ("err", status.getState()));
+            vros_THROW(tokendb_rocksdb_exception, "Rocksdb internal error: ${err}", ("err", status.getState()));
         }
 
         load_savepoints();
@@ -332,7 +332,7 @@ token_database::initialize(const fc::path& dbpath) {
 
     auto status = DB::Open(options, db_path_, columns, &handles, &db_);
     if(!status.ok()) {
-        EVT_THROW(tokendb_rocksdb_exception, "Rocksdb internal error: ${err}", ("err", status.getState()));
+        vros_THROW(tokendb_rocksdb_exception, "Rocksdb internal error: ${err}", ("err", status.getState()));
     }
 
     assert(handles.size() == 2);
@@ -373,7 +373,7 @@ int
 token_database::issue_tokens(const issuetoken& issue) {
     using namespace __internal;
     if(!exists_domain(issue.domain)) {
-        EVT_THROW(tokendb_domain_not_found, "Cannot find domain: ${name}", ("name", (std::string)issue.domain));
+        vros_THROW(tokendb_domain_not_found, "Cannot find domain: ${name}", ("name", (std::string)issue.domain));
     }
     rocksdb::WriteBatch batch;
     for(auto name : issue.names) {
@@ -574,7 +574,7 @@ token_database::read_domain(const domain_name& name, domain_def& domain) const {
     auto key    = get_domain_key(name);
     auto status = db_->Get(read_opts_, key.as_slice(), &value);
     if(!status.ok()) {
-        EVT_THROW(tokendb_domain_not_found, "Cannot find domain: ${name}", ("name",name));
+        vros_THROW(tokendb_domain_not_found, "Cannot find domain: ${name}", ("name",name));
     }
     domain = read_value<domain_def>(value);
     return 0;
@@ -587,7 +587,7 @@ token_database::read_token(const domain_name& domain, const token_name& name, to
     auto key    = get_token_key(domain, name);
     auto status = db_->Get(read_opts_, key.as_slice(), &value);
     if(!status.ok()) {
-        EVT_THROW(tokendb_token_not_found, "Cannot find token: ${domain}-${name}", ("domain",domain)("name",name));
+        vros_THROW(tokendb_token_not_found, "Cannot find token: ${domain}-${name}", ("domain",domain)("name",name));
     }
     token = read_value<token_def>(value);
     return 0;
@@ -600,7 +600,7 @@ token_database::read_group(const group_name& id, group_def& group) const {
     auto key    = get_group_key(id);
     auto status = db_->Get(read_opts_, key.as_slice(), &value);
     if(!status.ok()) {
-        EVT_THROW(tokendb_group_not_found, "Cannot find group: ${id}", ("id",id));
+        vros_THROW(tokendb_group_not_found, "Cannot find group: ${id}", ("id",id));
     }
     group = read_value<group_def>(value);
     return 0;
@@ -613,7 +613,7 @@ token_database::read_suspend(const proposal_name& name, suspend_def& suspend) co
     auto key    = get_suspend_key(name);
     auto status = db_->Get(read_opts_, key.as_slice(), &value);
     if(!status.ok()) {
-        EVT_THROW(tokendb_suspend_not_found, "Cannot find suspend: ${name}", ("name",name));
+        vros_THROW(tokendb_suspend_not_found, "Cannot find suspend: ${name}", ("name",name));
     }
     suspend = read_value<suspend_def>(value);
     return 0;
@@ -626,7 +626,7 @@ token_database::read_fungible(const symbol sym, fungible_def& fungible) const {
     auto key    = get_fungible_key(sym);
     auto status = db_->Get(read_opts_, key.as_slice(), &value);
     if(!status.ok()) {
-        EVT_THROW(tokendb_fungible_not_found, "Cannot find fungible def: ${sym}", ("sym",sym));
+        vros_THROW(tokendb_fungible_not_found, "Cannot find fungible def: ${sym}", ("sym",sym));
     }
     fungible = read_value<fungible_def>(value);
     return 0;
@@ -639,7 +639,7 @@ token_database::read_fungible(const symbol_id_type sym_id, fungible_def& fungibl
     auto key    = get_fungible_key(sym_id);
     auto status = db_->Get(read_opts_, key.as_slice(), &value);
     if(!status.ok()) {
-        EVT_THROW(tokendb_fungible_not_found, "Cannot find fungible def: ${id}", ("id",sym_id));
+        vros_THROW(tokendb_fungible_not_found, "Cannot find fungible def: ${id}", ("id",sym_id));
     }
     fungible = read_value<fungible_def>(value);
     return 0;
@@ -654,7 +654,7 @@ token_database::read_asset(const address& addr, const symbol symbol, asset& v) c
 
     if(!it->Valid() || it->key().compare(key.as_slice()) != 0) {
         delete it;
-        EVT_THROW(tokendb_asset_not_found, "Cannot find fungible: ${sym} in address: {addr}", ("sym",symbol)("addr",addr));
+        vros_THROW(tokendb_asset_not_found, "Cannot find fungible: ${sym} in address: {addr}", ("sym",symbol)("addr",addr));
     }
     v = read_value<asset>(it->value());
     delete it;
@@ -844,7 +844,7 @@ token_database::add_savepoint(int64_t seq) {
     if(!savepoints_.empty()) {
         auto& b = savepoints_.back();
         if(b.seq >= seq) {
-            EVT_THROW(tokendb_seq_not_valid, "Seq is not valid, prev: ${prev}, curr: ${curr}",
+            vros_THROW(tokendb_seq_not_valid, "Seq is not valid, prev: ${prev}, curr: ${curr}",
                       ("prev", b.seq)("curr", seq));
         }
     }
@@ -897,7 +897,7 @@ token_database::pop_savepoints(int64_t until) {
 
 int
 token_database::pop_back_savepoint() {
-    EVT_ASSERT(!savepoints_.empty(), tokendb_no_savepoint, "There's no savepoints anymore");
+    vros_ASSERT(!savepoints_.empty(), tokendb_no_savepoint, "There's no savepoints anymore");
 
     auto it = std::move(savepoints_.back());
     savepoints_.pop_back();
@@ -908,14 +908,14 @@ token_database::pop_back_savepoint() {
 int
 token_database::squash() {
     using namespace __internal;
-    EVT_ASSERT(savepoints_.size() >= 2, tokendb_squash_exception, "Squash needs at least two savepoints.");
+    vros_ASSERT(savepoints_.size() >= 2, tokendb_squash_exception, "Squash needs at least two savepoints.");
     
     auto n = savepoints_.back().node;
-    EVT_ASSERT(n.f.type == kRT, tokendb_squash_exception, "Squash needs two realtime savepoints.");
+    vros_ASSERT(n.f.type == kRT, tokendb_squash_exception, "Squash needs two realtime savepoints.");
 
     savepoints_.pop_back();
     auto n2 = savepoints_.back().node;
-    EVT_ASSERT(n2.f.type == kRT, tokendb_squash_exception, "Squash needs two realtime savepoints.");
+    vros_ASSERT(n2.f.type == kRT, tokendb_squash_exception, "Squash needs two realtime savepoints.");
 
     auto rt1 = GETPOINTER(rt_group, n.group);
     auto rt2 = GETPOINTER(rt_group, n2.group);
@@ -1177,7 +1177,7 @@ token_database::rollback_pd_group(pd_group* pd) {
 int
 token_database::rollback_to_latest_savepoint() {
     using namespace __internal;
-    EVT_ASSERT(!savepoints_.empty(), tokendb_no_savepoint, "There's no savepoints anymore");
+    vros_ASSERT(!savepoints_.empty(), tokendb_no_savepoint, "There's no savepoints anymore");
 
     auto n = savepoints_.back().node;
 
@@ -1374,7 +1374,7 @@ token_database::load_savepoints() {
 
     auto h = pd_header();
     fc::raw::unpack(fs, h);
-    EVT_ASSERT(h.dirty_flag == 0, tokendb_dirty_flag_exception, "checkpoints log file dirty flag set");
+    vros_ASSERT(h.dirty_flag == 0, tokendb_dirty_flag_exception, "checkpoints log file dirty flag set");
 
     auto pds = std::vector<pd_group>();
     fc::raw::unpack(fs, pds);
@@ -1390,8 +1390,8 @@ token_database::load_savepoints() {
     return 0;
 }
 
-}}  // namespace evt::chain
+}}  // namespace vros::chain
 
-FC_REFLECT(evt::chain::__internal::pd_header, (dirty_flag));
-FC_REFLECT(evt::chain::token_database::pd_action, (op)(type)(key)(value));
-FC_REFLECT(evt::chain::token_database::pd_group, (seq)(actions));
+FC_REFLECT(vros::chain::__internal::pd_header, (dirty_flag));
+FC_REFLECT(vros::chain::token_database::pd_action, (op)(type)(key)(value));
+FC_REFLECT(vros::chain::token_database::pd_group, (seq)(actions));

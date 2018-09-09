@@ -1,12 +1,12 @@
 /**
  *  @file
- *  @copyright defined in evt/LICENSE.txt
+ *  @copyright defined in vros/LICENSE.txt
  */
 #pragma once
-#include <evt/chain/block_header.hpp>
-#include <evt/chain/incremental_merkle.hpp>
+#include <vros/chain/block_header.hpp>
+#include <vros/chain/incremental_merkle.hpp>
 
-namespace evt { namespace chain {
+namespace vros { namespace chain {
 
 /**
  *  @struct block_header_state
@@ -65,9 +65,9 @@ struct block_header_state {
     public_key_type signee() const;
 };
 
-}}  // namespace evt::chain
+}}  // namespace vros::chain
 
-FC_REFLECT(evt::chain::block_header_state,
+FC_REFLECT(vros::chain::block_header_state,
            (id)(block_num)(header)(dpos_proposed_irreversible_blocknum)(dpos_irreversible_blocknum)(bft_irreversible_blocknum)(pending_schedule_lib_num)
            (pending_schedule_hash)(pending_schedule)(active_schedule)(blockroot_merkle)(producer_to_last_produced)(producer_to_last_implied_irb)
            (block_signing_key)(confirm_count)(confirmations))

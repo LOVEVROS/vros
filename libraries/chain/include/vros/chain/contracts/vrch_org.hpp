@@ -1,16 +1,16 @@
 /**
  *  @file
- *  @copyright defined in evt/LICENSE.txt
+ *  @copyright defined in vros/LICENSE.txt
  */
 #pragma once
 
-namespace evt { namespace chain {
+namespace vros { namespace chain {
 class token_database;
 struct genesis_state;
-}}  // namespace evt::chain
+}}  // namespace vros::chain
 
-namespace evt { namespace chain { namespace contracts {
+namespace vros { namespace chain { namespace contracts {
 
-void initialize_evt_org(token_database& token_db, const genesis_state& genesis);
+void initialize_vros_org(token_database& token_db, const genesis_state& genesis);
 
-}}}  // namespace evt::chain::contracts
+}}}  // namespace vros::chain::contracts

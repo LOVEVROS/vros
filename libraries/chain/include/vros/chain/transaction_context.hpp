@@ -1,13 +1,13 @@
 /**
  *  @file
- *  @copyright defined in evt/LICENSE.txt
+ *  @copyright defined in vros/LICENSE.txt
  */
 #pragma once
-#include <evt/chain/controller.hpp>
-#include <evt/chain/trace.hpp>
-#include <evt/chain/token_database.hpp>
+#include <vros/chain/controller.hpp>
+#include <vros/chain/trace.hpp>
+#include <vros/chain/token_database.hpp>
 
-namespace evt { namespace chain {
+namespace vros { namespace chain {
 
 class transaction_context {
 private:
@@ -58,4 +58,4 @@ private:
     bool is_initialized = false;
 };
 
-}}  // namespace evt::chain
+}}  // namespace vros::chain
