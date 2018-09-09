@@ -1,6 +1,6 @@
 /**
  *  @file
- *  @copyright defined in evt/LICENSE.txt
+ *  @copyright defined in vros/LICENSE.txt
  */
 #pragma once
 
@@ -11,7 +11,7 @@
 #include <fc/reflect/reflect.hpp>
 #include <fc/io/raw.hpp>
 
-namespace evt { namespace chain {
+namespace vros { namespace chain {
 using std::string;
 using uint128_t = __uint128_t;
 
@@ -173,7 +173,7 @@ string_to_name128(const char* str) {
     return name;
 }
 
-#define N128(X) evt::chain::string_to_name128(#X)
+#define N128(X) vros::chain::string_to_name128(#X)
 
 inline std::vector<name128>
 sort_names(std::vector<name128>&& names) {
@@ -181,14 +181,14 @@ sort_names(std::vector<name128>&& names) {
     return names;
 }
 
-}}  // namespace evt::chain
+}}  // namespace vros::chain
 
 namespace std {
 using uint128_t = __uint128_t;
 
 template <>
-struct hash<evt::chain::name128> : private hash<uint128_t> {
-    using argument_type = evt::chain::name128;
+struct hash<vros::chain::name128> : private hash<uint128_t> {
+    using argument_type = vros::chain::name128;
     using result_type   = typename hash<uint128_t>::result_type;
 
     result_type
@@ -203,12 +203,12 @@ namespace fc {
 
 class variant;
 
-void to_variant(const evt::chain::name128& name, fc::variant& v);
-void from_variant(const fc::variant& v, evt::chain::name128& name);
+void to_variant(const vros::chain::name128& name, fc::variant& v);
+void from_variant(const fc::variant& v, vros::chain::name128& name);
 
 namespace raw {
 
-using evt::chain::name128;
+using vros::chain::name128;
 
 template<>
 struct packer<name128> {

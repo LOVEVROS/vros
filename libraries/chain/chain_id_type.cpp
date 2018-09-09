@@ -1,29 +1,29 @@
 /**
  *  @file
- *  @copyright defined in evt/LICENSE.txt
+ *  @copyright defined in vros/LICENSE.txt
  */
 
-#include <evt/chain/chain_id_type.hpp>
-#include <evt/chain/exceptions.hpp>
+#include <vros/chain/chain_id_type.hpp>
+#include <vros/chain/exceptions.hpp>
 
-namespace evt { namespace chain {
+namespace vros { namespace chain {
 
 void
 chain_id_type::reflector_verify() const {
-    EVT_ASSERT(*reinterpret_cast<const fc::sha256*>(this) != fc::sha256(), chain_id_type_exception, "chain_id_type cannot be zero");
+    vros_ASSERT(*reinterpret_cast<const fc::sha256*>(this) != fc::sha256(), chain_id_type_exception, "chain_id_type cannot be zero");
 }
 
-}}  // namespace evt::chain
+}}  // namespace vros::chain
 
 namespace fc {
 
 void
-to_variant(const evt::chain::chain_id_type& cid, fc::variant& v) {
+to_variant(const vros::chain::chain_id_type& cid, fc::variant& v) {
     to_variant(static_cast<const fc::sha256&>(cid), v);
 }
 
 void
-from_variant(const fc::variant& v, evt::chain::chain_id_type& cid) {
+from_variant(const fc::variant& v, vros::chain::chain_id_type& cid) {
     from_variant(v, static_cast<fc::sha256&>(cid));
 }
 

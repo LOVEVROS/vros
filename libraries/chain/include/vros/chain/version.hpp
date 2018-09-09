@@ -1,6 +1,6 @@
 /**
  *  @file
- *  @copyright defined in evt/LICENSE.txt
+ *  @copyright defined in vros/LICENSE.txt
  */
 #pragma once
 #include <sstream>
@@ -10,7 +10,7 @@
 #include <stdint.h>
 #include <string>
 
-namespace evt { namespace chain {
+namespace vros { namespace chain {
 
 class version {
 public:
@@ -54,17 +54,17 @@ public:
     std::string vstr_;
 };
 
-}}  // namespace evt::chain
+}}  // namespace vros::chain
 
 namespace fc {
 
 inline void
-to_variant(const evt::chain::version& version, fc::variant& v) {
+to_variant(const vros::chain::version& version, fc::variant& v) {
     v = version.vstr_;
 }
 
 inline void
-from_variant(const fc::variant& v, evt::chain::version& version) {
+from_variant(const fc::variant& v, vros::chain::version& version) {
     version.vstr_ = v.get_string();
     std::stringstream ss(version.vstr_);
     std::string item;
@@ -81,4 +81,4 @@ from_variant(const fc::variant& v, evt::chain::version& version) {
 
 }  // namespace fc
 
-FC_REFLECT(evt::chain::version, (v_))
+FC_REFLECT(vros::chain::version, (v_))

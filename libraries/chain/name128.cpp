@@ -1,21 +1,21 @@
 /**
  *  @file
- *  @copyright defined in evt/LICENSE.txt
+ *  @copyright defined in vros/LICENSE.txt
  */
-#include <evt/chain/name128.hpp>
+#include <vros/chain/name128.hpp>
 #include <boost/algorithm/string.hpp>
-#include <evt/chain/exceptions.hpp>
+#include <vros/chain/exceptions.hpp>
 #include <fc/variant.hpp>
 
-namespace evt { namespace chain {
+namespace vros { namespace chain {
 
 void
 name128::set(const char* str) {
     const auto len = strnlen(str, 22);
-    EVT_ASSERT(len <= 21, name128_type_exception, "Name128 is longer than 21 characters (${name}) ",
+    vros_ASSERT(len <= 21, name128_type_exception, "Name128 is longer than 21 characters (${name}) ",
                ("name", string(str)));
     value = string_to_name128(str);
-    EVT_ASSERT(to_string() == string(str), name128_type_exception,
+    vros_ASSERT(to_string() == string(str), name128_type_exception,
                "Name128 not properly normalized (name: ${name}, normalized: ${normalized}) ",
                ("name", string(str))("normalized", to_string()));
 }
@@ -37,17 +37,17 @@ name128::operator string() const {
     return str;
 }
 
-}}  // namespace evt::chain
+}}  // namespace vros::chain
 
 
 namespace fc {
 
 void
-to_variant(const evt::chain::name128& name, fc::variant& v) {
+to_variant(const vros::chain::name128& name, fc::variant& v) {
     v = std::string(name);
 }
 void
-from_variant(const fc::variant& v, evt::chain::name128& name) {
+from_variant(const fc::variant& v, vros::chain::name128& name) {
     name = v.get_string();
 }
 
